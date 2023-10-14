@@ -7,9 +7,9 @@ When studying languages, medicine, law or other concept based material Free Reca
 
 Tech Stack used
 
-React 
-Javascript (May change to Typescript in the future)
-Vite 
-Bun (Node alterantive runtime)
-Express
-Postgreqsl 
+-React 
+-Javascript (May change to Typescript in the future)
+-Vite 
+-Bun (Node alterantive runtime)
+-Express
+-Postgreqsl 
