@@ -1,0 +1,89 @@
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const pool = require("./db");
+
+
+app.user(corrs());
+app.use(express.json());
+
+app.post("/topics", async (req, res) => {
+  try {
+    const { topic_name } = req.body;
+    const newTopic = await pool.query(
+      "INSERT INTO topics (topic_name) VALUES ($1) RETURNING *",
+      [topic_name]
+    );
+    res.json(newTopic.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+app.post("/sets", async (req, res) => {
+  try {
+    const { set_name, topic_id } = req.body;
+    const newSet = await pool.query(
+      "INSERT INTO sets (set_name, topic_id) VALUES ($1, $2) RETURNING *",
+      [set_name, topic_id]
+    );
+    res.json(newSet.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+
+app.post("/sets", async (req, res) => {
+  try {
+    const { set_name, topic_id } = req.body;
+    const newSet = await pool.query(
+      "INSERT INTO sets (set_name, topic_id) VALUES ($1, $2) RETURNING *",
+      [set_name, topic_id]
+    );
+    res.json(newSet.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+app.post("/notes", async (req, res) => {
+  try {
+    const { set_id } = req.body;
+    const newNote = await pool.query(
+      "INSERT INTO notes (set_id) VALUES ($1) RETURNING *",
+      [set_id]
+    );
+    res.json(newNote.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+
+app.post("/fieldsdata", async (req, res) => {
+  try {
+    const { note_id, field_id, field_value } = req.body;
+    const newFieldsData = await pool.query(
+      "INSERT INTO fieldsdata (note_id, field_id, field_value) VALUES ($1, $2, $3) RETURNING *",
+      [note_id, field_id, field_value]
+    );
+    res.json(newFieldsData.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+
+app.listen(5000, () => {
+    console.log("server has started on port 5000")
+});
+
+
+
+
