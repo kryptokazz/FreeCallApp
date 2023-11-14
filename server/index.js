@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const pool = require("./db");
+const bcrypt = require('bcrypt');
 const axios = require('axios');
 
 app.use(cors());
@@ -42,6 +43,60 @@ app.post('/users', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+// POST login user
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    // Find the user by username
+    const user = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+
+    if (user.rowCount === 0) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    const hashedPassword = user.rows[0].password_hash; // Retrieve the stored hashed password
+
+    // Compare the provided password with the stored hash
+    const passwordMatch = await bcrypt.compare(password, hashedPassword);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    // Passwords match, user is authenticated
+    res.status(200).json({ message: 'Login successful' });
+  } catch (error) {
+    console.error('Error executing query', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST register user
+app.post('/register', async (req, res) => {
+  const { username, password, profile_name } = req.body;
+
+  try {
+    // Check if the username already exists in the database
+    const existingUser = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+
+    if (existingUser.rowCount > 0) {
+      return res.status(400).json({ error: 'Username already taken' });
+    }
+
+    // Hash the provided password
+    const saltRounds = 10; // You can adjust the number of salt rounds
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Insert the new user into the database with the hashed password
+    const result = await pool.query('INSERT INTO users (username, password_hash, profile_name) VALUES ($1, $2, $3) RETURNING *', [username, hashedPassword, profile_name]);
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error('Error executing query', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 // GET all users
 app.get('/users', async (req, res) => {
@@ -92,8 +147,9 @@ app.get('/topics', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM topics');
     const topics = result.rows.map(topic => ({
-      id: topic.id, // Assuming the topic table has an 'id' column
-      name: topic.name
+      topic_id: topic.topic_id,
+      user_id: topic.user_id,
+      topic_name: topic.topic_name
     }));
     res.json(topics);
   } catch (error) {
@@ -101,7 +157,6 @@ app.get('/topics', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
 
 
 
@@ -142,6 +197,13 @@ app.post('/fields', async (req, res) => {
   }
 });
 
+
+
+
+
+
+
+
 // GET all fields
 app.get('/fields', async (req, res) => {
   try {
@@ -175,6 +237,28 @@ app.get('/words', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+
+
+// Express server code
+// DELETE user by ID
+app.delete('/users/:userId', async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    const result = await pool.query('DELETE FROM users WHERE user_id = $1 RETURNING *', [userId]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error executing query', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 
 app.delete('/:tableName/:recordId', async (req, res) => {
