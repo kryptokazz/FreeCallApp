@@ -17,6 +17,8 @@ const TopicDataListing = () => {
     getTopic();
   }, []);
 
+  console.log(topics);
+
   return (
     <div>
       <h2>Topic Data Listing</h2>

@@ -1,15 +1,30 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const TopicCreationForm: React.FC = () => {
+interface TopicCreationFormProps {
+  user_id: number; // Pass user_id as a prop
+}
+
+const TopicCreationForm: React.FC<TopicCreationFormProps> = ({ user_id }) => {
   const [topicName, setTopicName] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const body = { topic_name: topicName };
-      await axios.post("http://localhost:5000/topics", body);
-      window.location.href = "/"; // Use href instead of assigning to window.location directly
+      const body = {
+        user_id: user_id,
+        topic_name: topicName
+      };
+
+      const response = await axios.post("http://localhost:5000/topics", body);
+
+      if (response.status === 201) {
+        // Handle success
+        window.location.href = `/topic/${response.data.topic_id}`;
+      } else {
+        // Handle other responses or errors
+        console.error("Topic creation failed");
+      }
     } catch (err) {
       console.error(err.message);
     }
