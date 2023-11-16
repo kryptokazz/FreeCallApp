@@ -1,0 +1,35 @@
+# Node.js
+node_modules/
+package-lock.json
+
+# Build artifacts
+build/
+dist/
+.vite/
+
+# Environment variables
+.env
+
+# Editor and system files
+.DS_Store
+.vscode/
+
+# Logs and temporary files
+*.log
+*.lockb
+
+
+# Server-specific ignores
+/server/node_modules/
+/server/.env
+/server/.vscode/
+/server/*.log
+/server/*.lockb
+/server/dist/
+
+# Client-specific ignores
+/node_modules/
+/dist/
+/.vite/
+/src/old/
+

@@ -1,19 +1,19 @@
-// App.tsx
+// src/routes/index.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import UserRegistrationForm from './components/UserRegistrationForm';
-import UserLoginForm from './components/UserLoginForm';
-import UserDataListing from './components/UserDataListing';
-import TopicCreationForm from './components/TopicCreationForm';
-import TopicDataListing from './components/TopicDataListing';
-import SetCreationForm from './components/SetCreationForm';
-import SetDataListing from './components/SetDataListing';
-import FieldCreationForm from './components/FieldCreationForm';
-import FieldDataListing from './components/FieldDataListing';
-import WordCreationForm from './components/WordCreationForm';
-import WordDataListing from './components/WordDataListing';
+import UserRegistrationForm from '../components/UserRegistrationForm';
+import UserLoginForm from '../components/UserLoginForm';
+import UserDataListing from '../components/UserDataListing';
+import TopicCreationForm from '../components/TopicCreationForm';
+import TopicDataListing from '../components/TopicDataListing';
+import SetCreationForm from '../components/SetCreationForm';
+import SetDataListing from '../components/SetDataListing';
+import FieldCreationForm from '../components/FieldCreationForm';
+import FieldDataListing from '../components/FieldDataListing';
+import WordCreationForm from '../components/WordCreationForm';
+import WordDataListing from '../components/WordDataListing';
 
-const App = () => {
+const AppRouter = () => {
   return (
     <Router>
       <Routes>
@@ -33,5 +33,5 @@ const App = () => {
   );
 };
 
-export default App;
+export default AppRouter;
 

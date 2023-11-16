@@ -1,0 +1,37 @@
+// AppRouter.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import UserRegistrationForm from './components/UserRegistrationForm';
+import UserLoginForm from './components/UserLoginForm';
+import UserDataListing from './components/UserDataListing';
+import TopicCreationForm from './components/TopicCreationForm';
+import TopicDataListing from './components/TopicDataListing';
+import SetCreationForm from './components/SetCreationForm';
+import SetDataListing from './components/SetDataListing';
+import FieldCreationForm from './components/FieldCreationForm';
+import FieldDataListing from './components/FieldDataListing';
+import WordCreationForm from './components/WordCreationForm';
+import WordDataListing from './components/WordDataListing';
+
+const AppRouter = () => {
+  return (
+    <Router>
+      <Switch>
+        <Route path="/user-registration" component={UserRegistrationForm} />
+        <Route path="/user-login" component={UserLoginForm} />
+        <Route path="/user-data" component={UserDataListing} />
+        <Route path="/topic-creation" component={TopicCreationForm} />
+        <Route path="/topic-data" component={TopicDataListing} />
+        <Route path="/set-creation" component={SetCreationForm} />
+        <Route path="/set-data" component={SetDataListing} />
+        <Route path="/field-creation" component={FieldCreationForm} />
+        <Route path="/field-data" component={FieldDataListing} />
+        <Route path="/word-creation" component={WordCreationForm} />
+        <Route path="/word-data" component={WordDataListing} />
+      </Switch>
+    </Router>
+  );
+};
+
+export default AppRouter;
+
