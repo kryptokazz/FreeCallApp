@@ -5,13 +5,14 @@ const UserRegistrationForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [profileName, setProfileName] = useState(''); // Added state for profile name
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Basic validation
-    if (!username || !password || password !== confirmPassword) {
+    if (!username || !password || password !== confirmPassword || !profileName) {
       setErrorMessage('Please fill in all fields and ensure passwords match.');
       return;
     }
@@ -22,7 +23,7 @@ const UserRegistrationForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, profile_name: profileName }),
       });
 
       if (response.ok) {
@@ -56,6 +57,10 @@ const UserRegistrationForm = () => {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
+      </label>
+      <label>
+        Profile Name:
+        <input type="text" value={profileName} onChange={(e) => setProfileName(e.target.value)} />
       </label>
       <button type="submit">Register</button>
       {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
