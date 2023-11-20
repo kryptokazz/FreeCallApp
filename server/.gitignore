@@ -1,0 +1,17 @@
+# Server-specific ignores
+/server/node_modules/
+/server/.env
+/server/.vscode/
+/server/*.log
+/server/*.lockb
+/server/dist/
+/server/db.js
+/server/schema.sql
+# Client-specific ignores
+/node_modules/
+/dist/
+/.vite/
+/src/old/
+
+
+

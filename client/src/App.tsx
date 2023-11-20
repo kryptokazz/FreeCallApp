@@ -1,17 +1,18 @@
 // App.tsx
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import UserRegistrationForm from './components/UserRegistrationForm';
-import UserLoginForm from './components/UserLoginForm';
-import UserDataListing from './components/UserDataListing';
-import TopicCreationForm from './components/TopicCreationForm';
-import TopicDataListing from './components/TopicDataListing';
-import SetCreationForm from './components/SetCreationForm';
-import SetDataListing from './components/SetDataListing';
-import FieldCreationForm from './components/FieldCreationForm';
-import FieldDataListing from './components/FieldDataListing';
-import WordCreationForm from './components/WordCreationForm';
-import WordDataListing from './components/WordDataListing';
+import UserRegistrationForm from './components/User/UserRegistrationForm';
+import UserLoginForm from './components/User/UserLoginForm';
+import UserDataListing from './components/User/UserDataListing';
+import TopicCreationForm from './components/Topic/TopicCreationForm';
+import TopicDataListing from './components/Topic/TopicDataListing';
+import SetCreationForm from './components/Set/SetCreationForm';
+import SetDataListing from './components/Set/SetDataListing';
+import FieldCreationForm from './components/Field/FieldCreationForm';
+import FieldDataListing from './components/Field/FieldDataListing';
+import WordCreationForm from './components/Word/WordCreationForm';
+import WordDataListing from './components/Word/WordDataListing';
+
 
 const App = () => {
   return (

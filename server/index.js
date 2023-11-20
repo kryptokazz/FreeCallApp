@@ -4,6 +4,9 @@ const cors = require("cors");
 const pool = require("./db");
 const bcrypt = require('bcrypt');
 const axios = require('axios');
+const jwt = require('jsonwebtoken');
+const secretKey = 'testkey'; 
+
 
 app.use(cors());
 app.use(express.json());
@@ -31,18 +34,6 @@ app.get('/alldata', (req, res) => {
     });
 });
 
-
-// POST a new user
-app.post('/users', async (req, res) => {
-  const { username, profile_name } = req.body;
-  try {
-    const result = await pool.query('INSERT INTO users (username, profile_name) VALUES ($1, $2) RETURNING *', [username, profile_name]);
-    res.status(201).json(result.rows[0]);
-  } catch (error) {
-    console.error('Error executing query', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
 // POST login user
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
@@ -65,12 +56,29 @@ app.post('/login', async (req, res) => {
     }
 
     // Passwords match, user is authenticated
-    res.status(200).json({ message: 'Login successful' });
+    const userData = {
+      user_id: user.rows[0].user_id,
+      username: user.rows[0].username,
+      // Include other user data as needed
+    };
+
+
+    const token = jwt.sign(userData, secretKey, { expiresIn: '1h' });
+
+
+    // Retrieve topics associated with the user
+    const topics = await pool.query('SELECT * FROM topics WHERE user_id = $1', [user.rows[0].user_id]);
+
+    // Include topics in the response
+    userData.topics = topics.rows;
+
+    res.status(200).json({ token });
   } catch (error) {
     console.error('Error executing query', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 // POST register user
 app.post('/register', async (req, res) => {
@@ -85,7 +93,7 @@ app.post('/register', async (req, res) => {
     }
 
     // Hash the provided password
-    const saltRounds = 10; // You can adjust the number of salt rounds
+    const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Insert the new user into the database with the hashed password
@@ -96,7 +104,6 @@ app.post('/register', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
 
 // GET all users
 app.get('/users', async (req, res) => {
