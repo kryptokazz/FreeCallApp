@@ -1,42 +1,42 @@
-// UserLoginForm.jsx
 import React, { useState } from 'react';
 
 const UserLoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  // Basic validation
-  if (!username || !password || password !== confirmPassword) {
-    setErrorMessage('Please fill in all fields and ensure passwords match.');
-    return;
-  }
-
-  try {
-    const response = await fetch('http://localhost:5000/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password, profile_name: 'default' }), // Provide a default value for profile_name
-    });
-
-    if (response.ok) {
-      // Handle successful registration, e.g., redirect to a new page
-      console.log('Registration successful');
-    } else {
-      // Handle failed registration, display an error message
-      const errorData = await response.json();
-      setErrorMessage(errorData.error || 'Registration failed');
+    // Basic validation
+    if (!username || !password || password !== confirmPassword) {
+      setErrorMessage('Please fill in all fields and ensure passwords match.');
+      return;
     }
-  } catch (error) {
-    console.error('Error during registration:', error);
-    setErrorMessage('Internal server error');
-  }
-};
+
+    try {
+      const response = await fetch('http://localhost:5000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password, profile_name: 'default' }),
+      });
+
+      if (response.ok) {
+        // Handle successful registration, e.g., redirect to a new page
+        console.log('Registration successful');
+      } else {
+        // Handle failed registration, display an error message
+        const errorData = await response.json().catch(() => null); // Handle non-JSON response
+        setErrorMessage(errorData?.error || 'Registration failed');
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+      setErrorMessage('Internal server error');
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -48,7 +48,15 @@ const UserLoginForm = () => {
         Password:
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </label>
-      <button type="submit">Login</button>
+      <label>
+        Confirm Password:
+        <input
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+      </label>
+      <button type="submit">Register</button>
       {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
     </form>
   );
