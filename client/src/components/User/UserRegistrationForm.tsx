@@ -1,5 +1,8 @@
 // UserRegistrationForm.jsx
 import React, { useState } from 'react';
+import './UserRegistrationForm.css';
+
+
 
 const UserRegistrationForm = () => {
   const [username, setUsername] = useState('');
@@ -41,28 +44,52 @@ const UserRegistrationForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-      </label>
-      <label>
-        Password:
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </label>
-      <label>
-        Confirm Password:
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-      </label>
-      <label>
-        Profile Name:
-        <input type="text" value={profileName} onChange={(e) => setProfileName(e.target.value)} />
-      </label>
-      <button type="submit">Register</button>
+    <form className="form-container" onSubmit={handleSubmit}>
+      <div className="form-field">
+        <label>
+          Username:
+          <input
+            className="form-input"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </label>
+      </div>
+      <div className="form-field">
+        <label>
+          Password:
+          <input
+            className="form-input"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+      </div>
+      <div className="form-field">
+        <label>
+          Confirm Password:
+          <input
+            className="form-input"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </label>
+      </div>
+      <div className="form-field">
+        <label>
+          Profile Name:
+          <input
+            className="form-input"
+            type="text"
+            value={profileName}
+            onChange={(e) => setProfileName(e.target.value)}
+          />
+        </label>
+      </div>
+      <button className="form-button" type="submit">Register</button>
       {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
     </form>
   );
