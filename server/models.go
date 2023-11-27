@@ -9,3 +9,11 @@ type User struct {
     ProfileName string `json:"profile_name"`
 }
 
+
+type Topic struct {
+    TopicID     int    `json:"topic_id"`
+    TopicName   string `json:"topic_name"`
+    UserID      int    `json:"user_id"`
+    CreatedAt   string `json:"created_at"`
+    UpdatedAt   string `json:"updated_at"`
+}

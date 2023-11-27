@@ -111,7 +111,8 @@ func getUserByID(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteUser(w http.ResponseWriter, r *http.Request) {
-    userID := r.URL.Query().Get("userId")
+    vars := mux.Vars(r)
+    userID := vars["userId"] // Correctly assign userId from vars
 
     db := connectDB()
     defer db.Close()
