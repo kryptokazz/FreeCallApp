@@ -17,3 +17,12 @@ type Topic struct {
     CreatedAt   string `json:"created_at"`
     UpdatedAt   string `json:"updated_at"`
 }
+
+type Set struct {
+    SetID     int    `json:"set_id"`
+    SetName   string `json:"set_name"`
+    TopicID   int    `json:"topic_id"`
+    CreatedAt string `json:"created_at,omitempty"`
+    UpdatedAt string `json:"updated_at,omitempty"`
+}
+
