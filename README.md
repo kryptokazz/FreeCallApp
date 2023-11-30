@@ -63,7 +63,6 @@ The API is accessible at `http://[hostname]:8080/`. Replace `[hostname]` with th
 #### Topic
 ``` json
 {
-{
   "topic_id": int,
   "topic_name": "string",
   "user_id": int,
