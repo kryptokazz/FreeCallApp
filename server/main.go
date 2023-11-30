@@ -31,6 +31,11 @@ func main() {
     r.HandleFunc("/topics/{topicId}", DeleteTopic).Methods("DELETE")  
     r.HandleFunc("/topics/{topicId}", GetTopicByID).Methods("GET")
 
+
+
+    r.HandleFunc("/sets", GetSets).Methods("GET")
+
+
       // Serve the index.html file on the root URL
     r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
         http.ServeFile(w, r, "static/welcome.html")
@@ -39,7 +44,7 @@ func main() {
     // Serve other static files
     r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./static/"))))
 
-
+    
 
 
     log.Println("Server is running on port 8080")

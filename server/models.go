@@ -24,5 +24,6 @@ type Set struct {
     TopicID   int    `json:"topic_id"`
     CreatedAt string `json:"created_at,omitempty"`
     UpdatedAt string `json:"updated_at,omitempty"`
+    UserID int `json:user_id"`
 }
 
