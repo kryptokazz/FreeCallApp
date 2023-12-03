@@ -27,3 +27,10 @@ type Set struct {
     UserID int `json:user_id"`
 }
 
+
+type Word struct {
+    ID   int    `json:"id"`
+    Name string `json:"name"`
+    SetID int   `json:"set_id"`
+}
+
