@@ -27,10 +27,9 @@ type Set struct {
     UserID int `json:user_id"`
 }
 
-
 type Word struct {
-    ID   int    `json:"id"`
-    Name string `json:"name"`
-    SetID int   `json:"set_id"`
+    WordID   int    `json:"word_id"`
+    WordName string `json:"word_name"`
+    SetID    int    `json:"set_id"`
 }
 

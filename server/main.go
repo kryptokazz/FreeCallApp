@@ -34,7 +34,8 @@ func main() {
 
 
     r.HandleFunc("/sets", GetSets).Methods("GET")
-
+    
+    r.HandleFunc("/words", GetWords).Methods("GET") 
 
       // Serve the index.html file on the root URL
     r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
