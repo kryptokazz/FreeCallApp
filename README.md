@@ -49,6 +49,15 @@ The API is accessible at `http://[hostname]:8080/`. Replace `[hostname]` with th
 - `PUT /topics/{topicId}`: Update a topic by ID.
 - `DELETE /topics/{topicId}`: Delete a topic by ID.
 
+#### Sets
+- `GET /sets`: Retrieve all sets.
+- `POST /sets`: Create a new set.
+
+
+#### Words
+
+- `GET /words`: Retrieve all words.
+
 ### Data Models
 
 #### User
@@ -70,6 +79,9 @@ The API is accessible at `http://[hostname]:8080/`. Replace `[hostname]` with th
   "updated_at": "string"
 }
 ```
+
+
+
 
 ### Getting started
 
