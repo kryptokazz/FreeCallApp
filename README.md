@@ -79,6 +79,7 @@ The API is accessible at `http://[hostname]:8080/`. Replace `[hostname]` with th
   "updated_at": "string"
 }
 ```
+![image](https://github.com/kryptokazz/FreeCallApp/assets/92654627/a59b2a88-f8b7-4511-a6c3-5449c623f934)
 
 
 
