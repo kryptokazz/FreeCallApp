@@ -81,6 +81,56 @@ The API is accessible at `http://[hostname]:8080/`. Replace `[hostname]` with th
 ```
 ![image](https://github.com/kryptokazz/FreeCallApp/assets/92654627/a59b2a88-f8b7-4511-a6c3-5449c623f934)
 
+# Future Features and API Endpoints To-Do List
+
+## User Management
+- [ ] **POST** `/users` - Create a new user.
+- [ ] **GET** `/users/{userId}` - Retrieve a specific user by their ID.
+- [ ] **PUT** `/users/{userId}` - Update a specific user.
+- [ ] **DELETE** `/users/{userId}` - Delete a specific user.
+- [ ] **POST** `/users/login` - Authenticate a user and return a token.
+
+## Topic Management
+- [ ] **POST** `/topics` - Create a new topic.
+- [ ] **PUT** `/topics/{topicId}` - Update a specific topic.
+- [ ] **DELETE** `/topics/{topicId}` - Delete a specific topic.
+
+## Set Management
+- [ ] **POST** `/sets` - Create a new set.
+- [ ] **PUT** `/sets/{setId}` - Update a specific set.
+- [ ] **DELETE** `/sets/{setId}` - Delete a specific set.
+
+## Word Management
+- [ ] **POST** `/words` - Add a new word to a set.
+- [ ] **PUT** `/words/{wordId}` - Update a specific word.
+- [ ] **DELETE** `/words/{wordId}` - Delete a specific word.
+
+## Field Management
+- [ ] **POST** `/fields` - Create a new field.
+- [ ] **PUT** `/fields/{fieldId}` - Update a specific field.
+- [ ] **DELETE** `/fields/{fieldId}` - Delete a specific field.
+
+## Additional Functionalities
+- [ ] **GET** `/search` - Implement a general search across various entities.
+- [ ] **POST** `/upload` - Develop an endpoint for uploading files.
+- [ ] **GET** `/notifications` - Retrieve notifications for the logged-in user.
+- [ ] **GET** `/analytics` - Provide analytics data.
+- [ ] **GET** `/users/{userId}/activity` - Retrieve activity logs of a specific user.
+
+## Advanced Features
+- [ ] **WebSocket** `/realtime` - Implement real-time updates via WebSocket.
+- [ ] **POST** `/batch` - Enable batch operations on various entities.
+
+## Security Enhancements
+- [ ] Implement JWT or OAuth for secure user authentication.
+- [ ] Introduce role-based access control (RBAC).
+
+## Documentation and Maintenance
+- [ ] Add Swagger documentation for the API.
+- [ ] Set up structured logging for better traceability.
+- [ ] Implement robust data validation and sanitization.
+- [ ] Develop comprehensive unit and integration tests.
+- [ ] Regularly update dependencies and perform security audits.
 
 
 
