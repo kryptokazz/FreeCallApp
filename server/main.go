@@ -41,8 +41,16 @@ func main() {
 
 
     r.HandleFunc("/words", GetWords).Methods("GET") 
-    
+    r.HandleFunc("/fields", CreateField).Methods("POST")
+    r.HandleFunc("/fields/{fieldId}", UpdateField).Methods("PUT")
+    r.HandleFunc("/fields/{fieldId}", DeleteField).Methods("DELETE")
+ 
+
+
     r.HandleFunc("/fields", GetFields)
+    r.HandleFunc("/fields", CreateField).Methods("POST")
+    r.HandleFunc("/fields/{fieldId}", UpdateField).Methods("PUT")
+    r.HandleFunc("/fields/{fieldId}", DeleteField).Methods("DELETE")
 
     
       // Serve the index.html file on the root URL
