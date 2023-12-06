@@ -101,14 +101,14 @@ The API is accessible at `http://[hostname]:8080/`. Replace `[hostname]` with th
 - [x] **DELETE** `/sets/{setId}` - Delete a specific set.
 
 ## Word Management
-- [ ] **POST** `/words` - Add a new word to a set.
-- [ ] **PUT** `/words/{wordId}` - Update a specific word.
-- [ ] **DELETE** `/words/{wordId}` - Delete a specific word.
+- [x] **POST** `/words` - Add a new word to a set.
+- [x] **PUT** `/words/{wordId}` - Update a specific word.
+- [x] **DELETE** `/words/{wordId}` - Delete a specific word.
 
 ## Field Management
-- [ ] **POST** `/fields` - Create a new field.
-- [ ] **PUT** `/fields/{fieldId}` - Update a specific field.
-- [ ] **DELETE** `/fields/{fieldId}` - Delete a specific field.
+- [x] **POST** `/fields` - Create a new field.
+- [x] **PUT** `/fields/{fieldId}` - Update a specific field.
+- [x] **DELETE** `/fields/{fieldId}` - Delete a specific field.
 
 ## Additional Functionalities
 - [ ] **GET** `/search` - Implement a general search across various entities.
