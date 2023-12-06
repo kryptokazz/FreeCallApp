@@ -96,9 +96,9 @@ The API is accessible at `http://[hostname]:8080/`. Replace `[hostname]` with th
 - [x] **DELETE** `/topics/{topicId}` - Delete a specific topic.
 
 ## Set Management
-- [ ] **POST** `/sets` - Create a new set.
-- [ ] **PUT** `/sets/{setId}` - Update a specific set.
-- [ ] **DELETE** `/sets/{setId}` - Delete a specific set.
+- [x] **POST** `/sets` - Create a new set.
+- [x] **PUT** `/sets/{setId}` - Update a specific set.
+- [x] **DELETE** `/sets/{setId}` - Delete a specific set.
 
 ## Word Management
 - [ ] **POST** `/words` - Add a new word to a set.
