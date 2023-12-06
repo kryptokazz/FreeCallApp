@@ -1,6 +1,10 @@
-// models.go
-
 package main
+
+import (
+    "database/sql"
+    "time"
+)
+
 
 // User struct to map your user data
 type User struct {
@@ -24,8 +28,9 @@ type Set struct {
     TopicID   int    `json:"topic_id"`
     CreatedAt string `json:"created_at,omitempty"`
     UpdatedAt string `json:"updated_at,omitempty"`
-    UserID int `json:user_id"`
+    UserID sql.NullInt64 `json:"user_id"`
 }
+
 
 type Word struct {
     WordID   int    `json:"word_id"`
@@ -33,3 +38,11 @@ type Word struct {
     SetID    int    `json:"set_id"`
 }
 
+type Field struct {
+    FieldID    int       `json:"field_id"`
+    FieldName  string    `json:"field_name" validate:"required"`
+    FieldType  string    `json:"field_type" validate:"required"`
+    SetID      int       `json:"set_id" validate:"required"`
+    CreatedAt  time.Time `json:"created_at"`
+    UpdatedAt  time.Time `json:"updated_at"`
+}

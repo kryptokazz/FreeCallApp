@@ -34,9 +34,17 @@ func main() {
 
 
     r.HandleFunc("/sets", GetSets).Methods("GET")
-    
-    r.HandleFunc("/words", GetWords).Methods("GET") 
+    r.HandleFunc("/sets", CreateSet).Methods("POST")
+    r.HandleFunc("/sets/{setId}", PutSet).Methods("PUT")
+    r.HandleFunc("/sets/{setId}", DeleteSet).Methods("DELETE")
 
+
+
+    r.HandleFunc("/words", GetWords).Methods("GET") 
+    
+    r.HandleFunc("/fields", GetFields)
+
+    
       // Serve the index.html file on the root URL
     r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
         http.ServeFile(w, r, "static/welcome.html")
@@ -45,7 +53,7 @@ func main() {
     // Serve other static files
     r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./static/"))))
 
-    
+     
 
 
     log.Println("Server is running on port 8080")
