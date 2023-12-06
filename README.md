@@ -91,9 +91,9 @@ The API is accessible at `http://[hostname]:8080/`. Replace `[hostname]` with th
 - [x] **POST** `/users/login` - Authenticate a user and return a token.
 
 ## Topic Management
-- [ ] **POST** `/topics` - Create a new topic.
-- [ ] **PUT** `/topics/{topicId}` - Update a specific topic.
-- [ ] **DELETE** `/topics/{topicId}` - Delete a specific topic.
+- [x] **POST** `/topics` - Create a new topic.
+- [x] **PUT** `/topics/{topicId}` - Update a specific topic.
+- [x] **DELETE** `/topics/{topicId}` - Delete a specific topic.
 
 ## Set Management
 - [ ] **POST** `/sets` - Create a new set.
