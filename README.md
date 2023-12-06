@@ -84,11 +84,11 @@ The API is accessible at `http://[hostname]:8080/`. Replace `[hostname]` with th
 # Future Features and API Endpoints To-Do List
 
 ## User Management
-- [ x] **POST** `/users` - Create a new user.
-- [ x] **GET** `/users/{userId}` - Retrieve a specific user by their ID.
-- [ x] **PUT** `/users/{userId}` - Update a specific user.
-- [ x] **DELETE** `/users/{userId}` - Delete a specific user.
-- [x ] **POST** `/users/login` - Authenticate a user and return a token.
+- [x] **POST** `/users` - Create a new user.
+- [x] **GET** `/users/{userId}` - Retrieve a specific user by their ID.
+- [x] **PUT** `/users/{userId}` - Update a specific user.
+- [x] **DELETE** `/users/{userId}` - Delete a specific user.
+- [x] **POST** `/users/login` - Authenticate a user and return a token.
 
 ## Topic Management
 - [ ] **POST** `/topics` - Create a new topic.
