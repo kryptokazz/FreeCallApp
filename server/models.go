@@ -46,3 +46,19 @@ type Field struct {
     CreatedAt  time.Time `json:"created_at"`
     UpdatedAt  time.Time `json:"updated_at"`
 }
+
+// UserLoginRequest represents the request body for login
+type UserLogin struct {
+    Username string `json:"username"`
+    Password string `json:"password"`
+}
+
+
+// UserRegisterRequest represents the request body for user registration
+type UserRegister struct {
+    Username    string `json:"username"`
+    Password    string `json:"password"`
+    Email       string `json:"email"`
+    ProfileName string `json:"profile_name,omitempty"` // Optional, depending on your requirements
+}
+

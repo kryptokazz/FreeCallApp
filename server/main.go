@@ -40,6 +40,11 @@ func main() {
 
 
 
+    r.HandleFunc("/login", UserLogin).Methods("POST")
+    r.HandleFunc("/register", UserRegister).Methods("POST")
+
+
+
     r.HandleFunc("/words", GetWords).Methods("GET") 
     r.HandleFunc("/fields", CreateField).Methods("POST")
     r.HandleFunc("/fields/{fieldId}", UpdateField).Methods("PUT")
