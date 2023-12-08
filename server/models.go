@@ -48,14 +48,14 @@ type Field struct {
 }
 
 // UserLoginRequest represents the request body for login
-type UserLogin struct {
+type UserLoginType struct {
     Username string `json:"username"`
     Password string `json:"password"`
 }
 
 
 // UserRegisterRequest represents the request body for user registration
-type UserRegister struct {
+type UserRegisterType struct {
     Username    string `json:"username"`
     Password    string `json:"password"`
     Email       string `json:"email"`

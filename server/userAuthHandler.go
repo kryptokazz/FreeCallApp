@@ -13,7 +13,7 @@ var db *sql.DB
 
 // UserLogin handles user login requests
 func UserLogin(w http.ResponseWriter, r *http.Request) {
-    var req UserLoginRequest
+    var req UserLoginType
     err := json.NewDecoder(r.Body).Decode(&req)
     if err != nil {
         http.Error(w, err.Error(), http.StatusBadRequest)
@@ -44,7 +44,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 
 // UserRegister handles user registration requests
 func UserRegister(w http.ResponseWriter, r *http.Request) {
-    var req UserRegisterRequest
+    var req UserRegisterType
     err := json.NewDecoder(r.Body).Decode(&req)
     if err != nil {
         http.Error(w, "Invalid request body", http.StatusBadRequest)
