@@ -110,31 +110,5 @@
         <p>Embrace a new era of learning with technology and cognitive science. Designed for ambitious learners, FreeCallApp is your partner in mastering complex concepts effortlessly.</p>
         
         <!-- New Section for Handler Links -->
-        <div class="handler-links">
-            <h2>Explore Our Features</h2>
-            <ul>
-                <li><a href="/fields">Fields Handler</a></li>
-                <li><a href="/sets">Sets Handler</a></li>
-                <li><a href="/topics">Topics Handler</a></li>
-                <li><a href="/users">User Handler</a></li>
-                <li><a href="/words">Word Handler</a></li>
-            </ul>
-        </div>
-        <!-- End of New Section -->
-
-        <div class="tech-stack">
-            <h2>Our Innovative Tech Stack</h2>
-            <ul>
-                <li>React: Efficient UI, seamless experience</li>
-                <li>Typescript: Enhanced code quality, readability</li>
-                <li>Golang: Robust backend, superior performance</li>
-                <li>PostgreSQL: Reliable, supports complex queries</li>
-            </ul>
-        </div>
-    </div>
-    <div class="footer">
-        <p>&copy; 2023 FreeCallApp. All rights reserved.</p>
-    </div>
-</body>
-</html>
+        <div class="
 
