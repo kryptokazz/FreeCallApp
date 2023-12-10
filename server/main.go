@@ -32,7 +32,6 @@ func main() {
     r.HandleFunc("/topics/{topicId}", GetTopicByID).Methods("GET")
 
 
-
     r.HandleFunc("/sets", GetSets).Methods("GET")
     r.HandleFunc("/sets", CreateSet).Methods("POST")
     r.HandleFunc("/sets/{setId}", PutSet).Methods("PUT")
