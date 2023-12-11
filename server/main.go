@@ -62,6 +62,11 @@ func main() {
         http.ServeFile(w, r, "static/welcome.html")
     })
 
+
+    r.HandleFunc("/404", func(w http.ResponseWriter, r *http.Request) {
+	    http.ServeFile(w, r, "static/404.html")
+    })
+
     // Serve other static files
     r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./static/"))))
 
