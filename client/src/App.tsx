@@ -12,12 +12,13 @@ import FieldCreationForm from './components/Field/FieldCreationForm';
 import FieldDataListing from './components/Field/FieldDataListing';
 import WordCreationForm from './components/Word/WordCreationForm';
 import WordDataListing from './components/Word/WordDataListing';
-
+import Home from './Home'; 
 
 const App = () => {
   return (
     <Router>
       <Routes>
+	<Route path="/" element={<Home />} /> 
         <Route path="/user-registration" element={<UserRegistrationForm />} />
         <Route path="/user-login" element={<UserLoginForm />} />
         <Route path="/user-data" element={<UserDataListing />} />

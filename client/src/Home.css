@@ -1,0 +1,25 @@
+.home-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.navigation-menu ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.navigation-menu ul li {
+  margin: 10px 0;
+}
+
+.navigation-menu ul li a {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.navigation-menu ul li a:hover {
+  color: #0056b3;
+}
+
