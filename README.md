@@ -63,7 +63,7 @@ The API is accessible at `http://[hostname]:8080/`. Replace `[hostname]` with th
 #### User
 ```json
 {
-  "user_id": int,
+  "user_id": "int",
   "username": "string",
   "profile_name": "string"
 }
@@ -72,13 +72,51 @@ The API is accessible at `http://[hostname]:8080/`. Replace `[hostname]` with th
 #### Topic
 ``` json
 {
-  "topic_id": int,
+  "topic_id": "int",
   "topic_name": "string",
-  "user_id": int,
+  "user_id": "int",
   "created_at": "string",
   "updated_at": "string"
 }
 ```
+
+#### SET 
+``` json
+{
+  "set_id": 789,
+  "set_name": "Example Set",
+  "topic_id": 456,
+  "created_at": "2023-12-13T00:00:00Z",
+  "updated_at": "2023-12-13T12:00:00Z",
+  "user_id": null
+}
+```
+
+#### WORD 
+``` json 
+{
+  "word_id": 1011,
+  "word_name": "Example Word",
+  "set_id": 789
+}
+
+```
+
+#### FIELD 
+
+``` json
+{
+  "field_id": 1213,
+  "field_name": "Example Field",
+  "field_type": "string",
+  "set_id": 789,
+  "created_at": "2023-12-13T00:00:00Z",
+  "updated_at": "2023-12-13T12:00:00Z"
+}
+```
+
+
+
 ![image](https://github.com/kryptokazz/FreeCallApp/assets/92654627/a59b2a88-f8b7-4511-a6c3-5449c623f934)
 
 # Future Features and API Endpoints To-Do List
