@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import './FieldCreationForm.css';
 const FieldCreationForm: React.FC = () => {
   const [fieldName, setFieldName] = useState('');
   const [fieldType, setFieldType] = useState('');
@@ -11,7 +11,7 @@ const FieldCreationForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="field-creation-form">
       <label>
         Field Name:
         <input type="text" value={fieldName} onChange={(e) => setFieldName(e.target.value)} />
