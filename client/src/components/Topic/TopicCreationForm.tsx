@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './TopicCreationForm.css';
 
 interface TopicCreationFormProps {
   user_id: number; // Pass user_id as a prop
@@ -31,7 +32,7 @@ const TopicCreationForm: React.FC<TopicCreationFormProps> = ({ user_id }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="topic-creation-form">
       <label>
         Topic Name:
         <input

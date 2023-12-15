@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './SetCreationForm.css';
 
 const SetCreationForm: React.FC = () => {
   const [setName, setSetName] = useState('');
@@ -10,7 +11,7 @@ const SetCreationForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="set-creation-form">
       <label>
         Set Name:
         <input type="text" value={setName} onChange={(e) => setSetName(e.target.value)} />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import './WordCreationForm.css';
 const WordCreationForm: React.FC = () => {
   const [wordName, setWordName] = useState('');
   const [setId, setSetId] = useState('');
@@ -10,7 +10,7 @@ const WordCreationForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="word-creation-form">
       <label>
         Word Name:
         <input type="text" value={wordName} onChange={(e) => setWordName(e.target.value)} />

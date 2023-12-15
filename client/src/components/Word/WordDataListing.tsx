@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import './WordDataListing.css';
 const WordDataListing: React.FC = () => {
   const [words, setWords] = useState([]);
 
@@ -8,7 +8,8 @@ const WordDataListing: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <div className=
+"word-data-listing">
       <h2>Word Data Listing</h2>
       <ul>
         {words.map((word) => (
