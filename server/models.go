@@ -59,6 +59,6 @@ type UserRegisterType struct {
     Username    string `json:"username"`
     Password    string `json:"password"`
     Email       string `json:"email"`
-    ProfileName string `json:"profile_name,omitempty"` // Optional, depending on your requirements
+    ProfileName string `json:"profile_name"` // Optional, depending on your requirements
 }
 

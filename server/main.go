@@ -6,7 +6,8 @@ import (
     "log"
     "net/http"
     "github.com/gorilla/mux"
-   "github.com/joho/godotenv"
+    "github.com/gorilla/handlers"
+    "github.com/joho/godotenv"
 )
 
 func main() {
@@ -70,10 +71,12 @@ func main() {
     // Serve other static files
     r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./static/"))))
 
-     
-
+    corsObj := handlers.AllowedOrigins([]string{"*"})
+    methodsObj := handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS", "PUT", "DELETE"})
+    headersObj := handlers.AllowedHeaders([]string{"Content-Type", "X-Requested-With", "Authorization"}) 
+    
 
     log.Println("Server is running on port 5000")
-    log.Fatal(http.ListenAndServe(":5000", r))
+    log.Fatal(http.ListenAndServe(":5000", handlers.CORS(corsObj, methodsObj, headersObj)(r)))
 }
 
