@@ -6,7 +6,7 @@ import (
     "strconv"
     "net/http"
 )
-// GetTopics retrieves all topics
+
 func GetSets(w http.ResponseWriter, r *http.Request) {
     db := connectDB()
     defer db.Close()
@@ -19,6 +19,7 @@ func GetSets(w http.ResponseWriter, r *http.Request) {
     defer rows.Close()
 
     var sets []Set
+
     for rows.Next() {
         var s Set
         if err := rows.Scan(&s.SetID, &s.SetName, &s.TopicID, &s.CreatedAt, &s.UpdatedAt, &s.UserID ); err != nil {
@@ -27,12 +28,16 @@ func GetSets(w http.ResponseWriter, r *http.Request) {
         }
         sets = append(sets, s)
     }
+    
+    if sets == nil {
+	    sets = []Set{}
+    }
 
     if err := rows.Err(); err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-
+    w.Header().Set("Content-Type", "application/json")    
     json.NewEncoder(w).Encode(sets)
 }
 

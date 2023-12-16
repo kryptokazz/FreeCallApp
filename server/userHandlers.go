@@ -35,7 +35,10 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-
+    if users == nil {
+	    users = []User{}
+    }
+    w.Header().Set("Content-Type", "application/json")
     json.NewEncoder(w).Encode(users)
 }
 

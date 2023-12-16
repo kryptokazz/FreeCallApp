@@ -20,6 +20,7 @@ func GetFields(w http.ResponseWriter, r *http.Request) {
     defer rows.Close()
 
     var fields []Field // Use Field directly if it's in the same package
+
     for rows.Next() {
         var field Field
         if err := rows.Scan(&field.FieldID, &field.FieldName, &field.FieldType, &field.SetID, &field.CreatedAt, &field.UpdatedAt); err != nil {
@@ -27,6 +28,11 @@ func GetFields(w http.ResponseWriter, r *http.Request) {
             return
         }
         fields = append(fields, field)
+    }
+
+
+    if fields == nil {
+	    fields = []Field{}
     }
 
     if err := rows.Err(); err != nil {
