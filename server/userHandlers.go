@@ -1,21 +1,19 @@
-// handlers.go
 
 package main
 
 import (
     "encoding/json"
     "net/http"
-    "golang.org/x/crypto/bcrypt"
     "github.com/gorilla/mux"
     "database/sql"
 
 )
 
 func getUsers(w http.ResponseWriter, r *http.Request) {
-    db := connectDB()
+    db := connectDB() // Note the change here
     defer db.Close()
 
-    rows, err := db.Query("SELECT user_id, username FROM users")
+    rows, err := db.Query("SELECT user_id, username, profile_name FROM users")
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
@@ -25,7 +23,7 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
     var users []User
     for rows.Next() {
         var u User
-        if err := rows.Scan(&u.UserID, &u.Username); err != nil {
+        if err := rows.Scan(&u.UserID, &u.Username, &u.ProfileName); err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
             return
         }
@@ -36,55 +34,30 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-    if users == nil {
-	    users = []User{}
-    }
-    w.Header().Set("Content-Type", "application/json")
-    json.NewEncoder(w).Encode(users)
+
+    respondJSON(w, users)
 }
 
 func createUser(w http.ResponseWriter, r *http.Request) {
-	
-    w.Header().Set("Access-Control-Allow-Origin", "*") // Allows requests from any origin
-    w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS, POST") // Adjust as needed
-    w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization") // Adjust as needed
-
-   var newUser UserRegisterType  
-    
-    err := json.NewDecoder(r.Body).Decode(&newUser)
-    if err != nil {
+    var newUser UserRegisterType
+    if err := json.NewDecoder(r.Body).Decode(&newUser); err != nil {
         http.Error(w, err.Error(), http.StatusBadRequest)
         return
     }
 
-     hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), bcrypt.DefaultCost)
-    if err != nil {
-        http.Error(w, "Failed to hash password", http.StatusInternalServerError)
-        return
-    }
-
-    db := connectDB()
+    db := connectDB() // Adjusted to match the connectDB function
     defer db.Close()
 
-
-
-     // Store the hashed password in the UserAuth table
     var userID int
-    err = db.QueryRow("INSERT INTO Users (username, profile_name) VALUES ($1, $2) RETURNING user_id", newUser.Username, newUser.ProfileName).Scan(&userID)
+    err := db.QueryRow("INSERT INTO Users (username, email, profile_name) VALUES ($1, $2, $3) RETURNING user_id",
+                      newUser.Username, newUser.Email, newUser.ProfileName).Scan(&userID)
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
 
-     _, err = db.Exec("INSERT INTO UserAuth (user_id, username, password_hash) VALUES ($1, $2, $3)", userID, newUser.Username, string(hashedPassword))
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
-    json.NewEncoder(w).Encode(map[string]int{"user_id": userID})
+    respondJSON(w, map[string]int{"user_id": userID})
 }
-
-
 
 func updateUser(w http.ResponseWriter, r *http.Request) {
     userID := r.URL.Query().Get("userId")
@@ -132,8 +105,7 @@ func getUserByID(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteUser(w http.ResponseWriter, r *http.Request) {
-    vars := mux.Vars(r)
-    userID := vars["userId"] // Correctly assign userId from vars
+    userID := r.URL.Query().Get("userId")
 
     db := connectDB()
     defer db.Close()
@@ -145,5 +117,14 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
     }
 
     w.WriteHeader(http.StatusOK)
+
+}
+
+
+func respondJSON(w http.ResponseWriter, data interface{}) {
+    w.Header().Set("Content-Type", "application/json")
+    if err := json.NewEncoder(w).Encode(data); err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+    }
 }
 

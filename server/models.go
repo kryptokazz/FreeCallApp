@@ -11,6 +11,7 @@ type User struct {
     UserID       int    `json:"user_id"`
     Username string `json:"username"`
     ProfileName string `json:"profile_name"`
+    Email string `json:"email"` 
 }
 
 
@@ -61,4 +62,6 @@ type UserRegisterType struct {
     Email       string `json:"email"`
     ProfileName string `json:"profile_name"` // Optional, depending on your requirements
 }
+
+
 
