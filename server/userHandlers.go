@@ -13,7 +13,7 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
     db := connectDB() // Note the change here
     defer db.Close()
 
-    rows, err := db.Query("SELECT user_id, username, profile_name FROM users")
+    rows, err := db.Query("SELECT user_id, username, profile_name, email FROM users")
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
@@ -23,7 +23,7 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
     var users []User
     for rows.Next() {
         var u User
-        if err := rows.Scan(&u.UserID, &u.Username, &u.ProfileName); err != nil {
+        if err := rows.Scan(&u.UserID, &u.Username, &u.ProfileName, &u.Email); err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
             return
         }
