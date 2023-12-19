@@ -3,6 +3,7 @@ package main
 
 import (
     "encoding/json"
+    "golang.org/x/crypto/bcrypt"
     "net/http"
     "github.com/gorilla/mux"
     "database/sql"
@@ -10,7 +11,7 @@ import (
 )
 
 func getUsers(w http.ResponseWriter, r *http.Request) {
-    db := connectDB() // Note the change here
+    db := connectDB()     
     defer db.Close()
 
     rows, err := db.Query("SELECT user_id, username, profile_name, email FROM users")
@@ -45,12 +46,20 @@ func createUser(w http.ResponseWriter, r *http.Request) {
         return
     }
 
+
+    hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), bcrypt.DefaultCost)
+    if err != nil {
+	    http.Error(w, err.Error(), http.StatusInternalServerError)
+	    return
+    }
+
+
     db := connectDB() // Adjusted to match the connectDB function
     defer db.Close()
 
     var userID int
-    err := db.QueryRow("INSERT INTO Users (username, email, profile_name) VALUES ($1, $2, $3) RETURNING user_id",
-                      newUser.Username, newUser.Email, newUser.ProfileName).Scan(&userID)
+    err = db.QueryRow("INSERT INTO Users (username, email, profile_name, password) VALUES ($1, $2, $3, $4) RETURNING user_id",
+                      newUser.Username, newUser.Email, newUser.ProfileName, string(hashedPassword)).Scan(&userID)
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return

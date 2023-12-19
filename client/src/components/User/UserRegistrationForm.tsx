@@ -9,24 +9,25 @@ const UserRegistrationForm = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [profileName, setProfileName] = useState(''); // Added state for profile name
+  const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Basic validation
-    if (!username || !password || password !== confirmPassword || !profileName) {
+    if (!username || !password || password !== confirmPassword || !profileName || !email) {
       setErrorMessage('Please fill in all fields and ensure passwords match.');
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:5000/register', {
+      const response = await fetch('http://localhost:5000/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, profile_name: profileName }),
+        body: JSON.stringify({ username, password, profile_name: profileName, email }),
       });
 
       if (response.ok) {
@@ -88,7 +89,18 @@ const UserRegistrationForm = () => {
             onChange={(e) => setProfileName(e.target.value)}
           />
         </label>
-      </div>
+     </div>
+       <div className="form-field">
+        <label>
+          Email:
+          <input
+            className="form-input"
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+     </div>
       <button className="form-button" type="submit">Register</button>
       {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
     </form>
