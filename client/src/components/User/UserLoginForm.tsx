@@ -18,7 +18,7 @@ const UserLoginForm = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/users', {
+      const response = await fetch('http://localhost:5000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ const UserLoginForm = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
       </label>
-      <button type="submit">Register</button>
+      <button type="submit">Login</button>
       {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
     </form>
   );
