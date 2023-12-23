@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
-import './UserLoginForm.css'; // Adjust the path if necessary
-
+import './UserLoginForm.css'; // Ensure this path is correct
 
 const UserLoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Basic validation
-    if (!username || !password || password !== confirmPassword) {
-      setErrorMessage('Please fill in all fields and ensure passwords match.');
+    if (!username || !password) {
+      setErrorMessage('Please fill in all fields.');
       return;
     }
 
@@ -23,44 +21,59 @@ const UserLoginForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, profile_name: 'default' }),
+        body: JSON.stringify({ username, password }),
       });
 
       if (response.ok) {
-        // Handle successful registration, e.g., redirect to a new page
-        console.log('Registration successful');
+        // Handle successful login, e.g., redirect or store authentication token
+        console.log('Login successful');
       } else {
-        // Handle failed registration, display an error message
+        // Handle failed login, display an error message
         const errorData = await response.json().catch(() => null); // Handle non-JSON response
-        setErrorMessage(errorData?.error || 'Registration failed');
+        setErrorMessage(errorData?.error || 'Login failed');
       }
     } catch (error) {
-      console.error('Error during registration:', error);
+      console.error('Error during login:', error);
       setErrorMessage('Internal server error');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="login-form">
-      <label>
-        Username:
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-      </label>
-      <label>
-        Password:
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </label>
-      <label>
-        Confirm Password:
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-      </label>
-      <button type="submit">Login</button>
-      {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
-    </form>
+    <div className="container">
+      <div className="info-section">
+        {/* You can add branding content here, similar to the signup form */}
+        <h1>Welcome Back!</h1>
+      </div>
+      <div className="form-section">
+        <div className="login-form">
+          <h2>Login</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <button type="submit" className="submit-btn">Login</button>
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
+          </form>
+        </div>
+      </div>
+    </div>
   );
 };
 
