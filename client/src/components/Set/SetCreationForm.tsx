@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import './SetCreationForm.css';
 
-const SetCreationForm: React.FC = () => {
+interface SetCreationFormProps {
+  topicId: string; // Pass topicId as a prop
+}
+
+const SetCreationForm: React.FC<SetCreationFormProps> = ({ topicId }) => {
   const [setName, setSetName] = useState('');
-  const [topicId, setTopicId] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,13 +19,12 @@ const SetCreationForm: React.FC = () => {
         Set Name:
         <input type="text" value={setName} onChange={(e) => setSetName(e.target.value)} />
       </label>
-      <label>
-        Topic ID:
-        <input type="text" value={topicId} onChange={(e) => setTopicId(e.target.value)} />
-      </label>
+      {/* Use the passed topicId */}
+      <input type="hidden" value={topicId} />
       <button type="submit">Create Set</button>
     </form>
   );
 };
 
 export default SetCreationForm;
+

@@ -12,19 +12,20 @@ import FieldCreationForm from './components/Field/FieldCreationForm';
 import FieldDataListing from './components/Field/FieldDataListing';
 import WordCreationForm from './components/Word/WordCreationForm';
 import WordDataListing from './components/Word/WordDataListing';
-import Home from './Home'; 
+import Home from './Home';
 
 const App = () => {
   return (
     <Router>
       <Routes>
-	<Route path="/" element={<Home />} /> 
+        <Route path="/" element={<Home />} />
         <Route path="/user-registration" element={<UserRegistrationForm />} />
         <Route path="/user-login" element={<UserLoginForm />} />
         <Route path="/user-data" element={<UserDataListing />} />
-        <Route path="/topic-creation" element={<TopicCreationForm />} />
+        {/* Render TopicCreationForm - This is a placeholder comment. You should replace it with the actual rendering logic for TopicCreationForm. */}
+        <Route path="/topic-creation" element={<TopicCreationForm user_id={/* pass the user ID */} />} />
         <Route path="/topic-data" element={<TopicDataListing />} />
-        <Route path="/set-creation" element={<SetCreationForm />} />
+        <Route path="/set-creation" element={<SetCreationForm topicId={/* pass the selected topic ID */} />} />
         <Route path="/set-data" element={<SetDataListing />} />
         <Route path="/field-creation" element={<FieldCreationForm />} />
         <Route path="/field-data" element={<FieldDataListing />} />
@@ -36,4 +37,5 @@ const App = () => {
 };
 
 export default App;
+
 
