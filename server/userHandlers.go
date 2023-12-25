@@ -1,14 +1,29 @@
-
 package main
 
 import (
     "encoding/json"
     "golang.org/x/crypto/bcrypt"
     "net/http"
+    "crypto/rand"
+    "encoding/base64"
     "github.com/gorilla/mux"
     "database/sql"
 
 )
+
+
+func generateRandomSalt() (string, error) {
+    const saltSize = 16
+    bytes := make([]byte, saltSize)
+    if _, err := rand.Read(bytes); err != nil {
+        return "", err
+    }
+    return base64.StdEncoding.EncodeToString(bytes), nil
+}
+
+
+
+
 
 func getUsers(w http.ResponseWriter, r *http.Request) {
     db := connectDB()     
@@ -39,6 +54,7 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
     respondJSON(w, users)
 }
 
+
 func createUser(w http.ResponseWriter, r *http.Request) {
     var newUser UserRegisterType
     if err := json.NewDecoder(r.Body).Decode(&newUser); err != nil {
@@ -46,27 +62,57 @@ func createUser(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-
-    hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), bcrypt.DefaultCost)
-    if err != nil {
-	    http.Error(w, err.Error(), http.StatusInternalServerError)
-	    return
-    }
-
-
-    db := connectDB() // Adjusted to match the connectDB function
-    defer db.Close()
-
-    var userID int
-    err = db.QueryRow("INSERT INTO Users (username, email, profile_name, password) VALUES ($1, $2, $3, $4) RETURNING user_id",
-                      newUser.Username, newUser.Email, newUser.ProfileName, string(hashedPassword)).Scan(&userID)
+    // Generate a random salt
+    salt, err := generateRandomSalt()
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
 
-    respondJSON(w, map[string]int{"user_id": userID})
+    // Hash the password with the salt
+    hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newUser.Password+salt), bcrypt.DefaultCost)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    db := connectDB()
+    defer db.Close()
+
+    var userID int
+
+    // Insert into 'users' table
+    err = db.QueryRow("INSERT INTO users (username, password, profile_name, email) VALUES ($1, $2, $3, $4) RETURNING user_id",
+        newUser.Username, hashedPassword, newUser.ProfileName, newUser.Email).Scan(&userID)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    // Insert into 'UserAuth' table
+    _, err = db.Exec("INSERT INTO UserAuth (user_id, username, password, salt) VALUES ($1, $2, $3, $4)",
+        userID, newUser.Username, string(hashedPassword), salt)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    respondJSON(w, userID)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 func updateUser(w http.ResponseWriter, r *http.Request) {
     userID := r.URL.Query().Get("userId")
@@ -136,4 +182,3 @@ func respondJSON(w http.ResponseWriter, data interface{}) {
         http.Error(w, err.Error(), http.StatusInternalServerError)
     }
 }
-

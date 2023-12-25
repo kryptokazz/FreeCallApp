@@ -3,80 +3,86 @@
 package main
 
 import (
-    "log"
-    "net/http"
-    "github.com/gorilla/mux"
-    "github.com/gorilla/handlers"
-    "github.com/joho/godotenv"
+	"log"
+	"net/http"
+        "database/sql"
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
+// Assuming you have a global DB connection
+var db *sql.DB
+
 func main() {
-    r := mux.NewRouter()
+	r := mux.NewRouter()
 
-    if err := godotenv.Load(); err != nil {
-        log.Println("No .env file found")
-    }
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found")
+	}
 
-    r.HandleFunc("/users", getUsers).Methods("GET")
-    r.HandleFunc("/users", createUser).Methods("POST")
-    r.HandleFunc("/users/{userId}", getUserByID).Methods("GET")
-    r.HandleFunc("/users/{userId}", updateUser).Methods("PUT")
-    r.HandleFunc("/users/{userId}", deleteUser).Methods("DELETE")
+	// Initialize the database connection
+	db = connectDB()
+	defer db.Close()
 
+	// Register routes
+	registerRoutes(r)
 
+	// CORS configuration
+	corsObj := handlers.AllowedOrigins([]string{"*"})
+	methodsObj := handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS", "PUT", "DELETE"})
+	headersObj := handlers.AllowedHeaders([]string{"Content-Type", "X-Requested-With", "Authorization"})
 
-      // Topics routes
-    r.HandleFunc("/topics", GetTopics).Methods("GET")
-    r.HandleFunc("/topics", CreateTopic).Methods("POST")
-    r.HandleFunc("/topics/{topicId}", UpdateTopic).Methods("PUT")
-    r.HandleFunc("/topics/{topicId}", DeleteTopic).Methods("DELETE")  
-    r.HandleFunc("/topics/{topicId}", GetTopicByID).Methods("GET")
+	// Start the server
+	log.Println("Server is running on port 5000")
+	log.Fatal(http.ListenAndServe(":5000", handlers.CORS(corsObj, methodsObj, headersObj)(r)))
+}
 
+// registerRoutes registers all the routes
+func registerRoutes(r *mux.Router) {
+	// User routes
+	r.HandleFunc("/users", getUsers).Methods("GET")
+	r.HandleFunc("/users", createUser).Methods("POST")
+	r.HandleFunc("/users/{userId}", getUserByID).Methods("GET")
+	r.HandleFunc("/users/{userId}", updateUser).Methods("PUT")
+	r.HandleFunc("/users/{userId}", deleteUser).Methods("DELETE")
 
-    r.HandleFunc("/sets", GetSets).Methods("GET")
-    r.HandleFunc("/sets", CreateSet).Methods("POST")
-    r.HandleFunc("/sets/{setId}", PutSet).Methods("PUT")
-    r.HandleFunc("/sets/{setId}", DeleteSet).Methods("DELETE")
+	// Topics routes
+	r.HandleFunc("/topics", GetTopics).Methods("GET")
+	r.HandleFunc("/topics", CreateTopic).Methods("POST")
+	r.HandleFunc("/topics/{topicId}", UpdateTopic).Methods("PUT")
+	r.HandleFunc("/topics/{topicId}", DeleteTopic).Methods("DELETE")
+	r.HandleFunc("/topics/{topicId}", GetTopicByID).Methods("GET")
 
+	// Sets routes
+	r.HandleFunc("/sets", GetSets).Methods("GET")
+	r.HandleFunc("/sets", CreateSet).Methods("POST")
+	r.HandleFunc("/sets/{setId}", PutSet).Methods("PUT")
+	r.HandleFunc("/sets/{setId}", DeleteSet).Methods("DELETE")
 
-
-    r.HandleFunc("/login", UserLogin).Methods("POST")
-    r.HandleFunc("/register", UserRegister).Methods("POST")
-
-
-
-    r.HandleFunc("/words", GetWords).Methods("GET") 
-    r.HandleFunc("/fields", CreateField).Methods("POST")
-    r.HandleFunc("/fields/{fieldId}", UpdateField).Methods("PUT")
-    r.HandleFunc("/fields/{fieldId}", DeleteField).Methods("DELETE")
- 
-
-
-    r.HandleFunc("/fields", GetFields)
-    r.HandleFunc("/fields", CreateField).Methods("POST")
-    r.HandleFunc("/fields/{fieldId}", UpdateField).Methods("PUT")
-    r.HandleFunc("/fields/{fieldId}", DeleteField).Methods("DELETE")
-
-    
-      // Serve the index.html file on the root URL
-    r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        http.ServeFile(w, r, "static/welcome.html")
-    })
+	// Authentication routes
+	r.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		UserLogin(w, r, db)
+	}).Methods("POST")
 
 
-    r.HandleFunc("/404", func(w http.ResponseWriter, r *http.Request) {
-	    http.ServeFile(w, r, "static/404.html")
-    })
+	// Other routes (words, fields, etc.)
+	r.HandleFunc("/words", GetWords).Methods("GET")
+	r.HandleFunc("/fields", CreateField).Methods("POST")
+	r.HandleFunc("/fields/{fieldId}", UpdateField).Methods("PUT")
+	r.HandleFunc("/fields/{fieldId}", DeleteField).Methods("DELETE")
 
-    // Serve other static files
-    r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./static/"))))
+	// Serve the index.html file on the root URL
+	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "static/welcome.html")
+	})
 
-    corsObj := handlers.AllowedOrigins([]string{"*"})
-    methodsObj := handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS", "PUT", "DELETE"})
-    headersObj := handlers.AllowedHeaders([]string{"Content-Type", "X-Requested-With", "Authorization"}) 
-    
+	// Serve 404 page
+	r.HandleFunc("/404", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "static/404.html")
+	})
 
-    log.Println("Server is running on port 5000")
-    log.Fatal(http.ListenAndServe(":5000", handlers.CORS(corsObj, methodsObj, headersObj)(r)))
+	// Serve other static files
+	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./static/"))))
 }
 

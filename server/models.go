@@ -63,5 +63,11 @@ type UserRegisterType struct {
     ProfileName string `json:"profile_name"` // Optional, depending on your requirements
 }
 
+type UserAuth struct {
+    UserID    int    `json:"user_id"`
+    Username  string `json:"username"`
+    Password  string `json:"password"`
+    Salt      string `json:"salt"`
+}
 
 
