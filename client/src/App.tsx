@@ -22,10 +22,9 @@ const App = () => {
         <Route path="/user-registration" element={<UserRegistrationForm />} />
         <Route path="/user-login" element={<UserLoginForm />} />
         <Route path="/user-data" element={<UserDataListing />} />
-        {/* Render TopicCreationForm - This is a placeholder comment. You should replace it with the actual rendering logic for TopicCreationForm. */}
-        <Route path="/topic-creation" element={<TopicCreationForm user_id={/* pass the user ID */} />} />
+        <Route path="/topic-creation" element={<TopicCreationForm />} />
         <Route path="/topic-data" element={<TopicDataListing />} />
-        <Route path="/set-creation" element={<SetCreationForm topicId={/* pass the selected topic ID */} />} />
+        <Route path="/set-creation" element={<SetCreationForm />} />
         <Route path="/set-data" element={<SetDataListing />} />
         <Route path="/field-creation" element={<FieldCreationForm />} />
         <Route path="/field-data" element={<FieldDataListing />} />
