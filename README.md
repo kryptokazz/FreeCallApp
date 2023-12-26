@@ -148,6 +148,16 @@ The API is accessible at `http://[hostname]:8080/`. Replace `[hostname]` with th
 - [x] **PUT** `/fields/{fieldId}` - Update a specific field.
 - [x] **DELETE** `/fields/{fieldId}` - Delete a specific field.
 
+- [ ] **Manage User Authentication**:
+  - Manage user authentication using various methods such as setting a variable like 'isLogged' in the state of each component, using localStorage to save the login information, or implementing a token-based authentication system
+
+- [ ] **Store Authentication Information**:
+  - Once the user is authenticated, store this information on the client side. The common practice is to use cookies to store session information, ensuring that the information is secure.
+
+- [ ] **Render User Session Page**:
+  - After the user is authenticated, conditionally render the user session page to show the content that can be accessed. This can be done by checking the user's authentication status and then rendering the appropriate components or routes.
+
+
 ## Additional Functionalities
 - [ ] **GET** `/search` - Implement a general search across various entities.
 - [ ] **POST** `/upload` - Develop an endpoint for uploading files.
