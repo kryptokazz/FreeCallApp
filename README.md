@@ -66,6 +66,7 @@ The API is accessible at `http://[hostname]:8080/`. Replace `[hostname]` with th
   "user_id": "int",
   "username": "string",
   "profile_name": "string"
+  "email": "string"
 }
 ```
 
