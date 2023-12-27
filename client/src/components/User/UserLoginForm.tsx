@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import './UserLoginForm.css'; // Ensure this path is correct
+import { useNavigate } from 'react-router-dom'; 
+import './UserLoginForm.css';
 
 const UserLoginForm = () => {
+  const navigate =  useNavigate(); 
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -27,6 +30,9 @@ const UserLoginForm = () => {
       if (response.ok) {
         // Handle successful login, e.g., redirect or store authentication token
         console.log('Login successful');
+
+        // Redirect to a different page after successful login
+        navigate('/dashboard');
       } else {
         // Handle failed login, display an error message
         const errorData = await response.json().catch(() => null); // Handle non-JSON response

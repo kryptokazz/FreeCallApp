@@ -1,0 +1,34 @@
+/* Dashboard.css */
+
+.dashboard-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-content {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.widget {
+  flex: 1;
+  padding: 20px;
+  margin-right: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.widget h2 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* You can add more specific styles for your widgets, such as for charts, lists, etc. */
+
