@@ -5,14 +5,16 @@ package main
 import (
 	"log"
 	"net/http"
-        "database/sql"
+	"database/sql"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/sessions"
 	"github.com/joho/godotenv"
 )
 
 // Assuming you have a global DB connection
 var db *sql.DB
+var store *sessions.CookieStore
 
 func main() {
 	r := mux.NewRouter()
@@ -25,6 +27,7 @@ func main() {
 	db = connectDB()
 	defer db.Close()
 
+	store = sessions.NewCookieStore([]byte("18073a03-a37e-4563-832d-92304277d31a"))
 	// Register routes
 	registerRoutes(r)
 
@@ -57,14 +60,18 @@ func registerRoutes(r *mux.Router) {
 	// Sets routes
 	r.HandleFunc("/sets", GetSets).Methods("GET")
 	r.HandleFunc("/sets", CreateSet).Methods("POST")
-	r.HandleFunc("/sets/{setId}", PutSet).Methods("PUT")
+	r.HandleFunc("/sets/{setId}", UpdateSet).Methods("PUT")
 	r.HandleFunc("/sets/{setId}", DeleteSet).Methods("DELETE")
 
 	// Authentication routes
 	r.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
-		UserLogin(w, r, db)
+		UserLogin(w, r, db, store)
 	}).Methods("POST")
 
+	r.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) { 
+		LogoutHandler(w, r, store)
+	}).Methods("POST")
+			
 
 	// Other routes (words, fields, etc.)
 	r.HandleFunc("/words", GetWords).Methods("GET")
