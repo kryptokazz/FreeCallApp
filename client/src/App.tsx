@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import UserRegistrationForm from './components/User/UserRegistrationForm';
+import Dashboard from './components/User/Dashboard';
 import UserLoginForm from './components/User/UserLoginForm';
 import UserDataListing from './components/User/UserDataListing';
 import TopicCreationForm from './components/Topic/TopicCreationForm';
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/user-login" element={<UserLoginForm />} />
         <Route path="/user-data" element={<UserDataListing />} />
         <Route path="/topic-creation" element={<TopicCreationForm />} />
+	<Route path="/dashboard" element={<Dashboard />}/> 
         <Route path="/topic-data" element={<TopicDataListing />} />
         <Route path="/set-creation" element={<SetCreationForm />} />
         <Route path="/set-data" element={<SetDataListing />} />

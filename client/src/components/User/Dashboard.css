@@ -1,5 +1,10 @@
 /* Dashboard.css */
 
+/* Ensure a consistent color scheme, replace #your-primary-color with your actual primary color */
+:root {
+  --primary-color: #f0f0f0;
+}
+
 .dashboard-container {
   max-width: 800px;
   margin: 20px auto;
@@ -23,12 +28,28 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #f9f9f9;
+  transition: box-shadow 0.3s ease; /* Add a smooth transition for hover effect */
+}
+
+/* Add hover effect */
+.widget:hover {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 .widget h2 {
   margin-bottom: 10px;
-  color: #333;
+  color: var(--primary-color); /* Use your primary color for h2 text */
 }
 
 /* You can add more specific styles for your widgets, such as for charts, lists, etc. */
+
+/* Example of a simple media query for smaller screens */
+@media (max-width: 600px) {
+  .dashboard-content {
+    flex-direction: column; /* Stack widgets vertically on smaller screens */
+  }
+  .widget {
+    margin-right: 0; /* Remove right margin on widgets for better spacing */
+  }
+}
 
