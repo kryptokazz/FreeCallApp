@@ -68,7 +68,7 @@ func CreateSet(w http.ResponseWriter, r *http.Request) {
 }
 
 // PutSet updates an existing set
-func PutSet(w http.ResponseWriter, r *http.Request) {
+func UpdateSet(w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
     setId, err := strconv.Atoi(vars["setId"])
     if err != nil {

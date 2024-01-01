@@ -6,12 +6,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
-
 	"golang.org/x/crypto/bcrypt"
 	"github.com/gorilla/sessions"
 )
-
 // UserLogin handles user login requests
 func UserLogin(w http.ResponseWriter, r *http.Request, db *sql.DB, store *sessions.CookieStore) {
 	var req UserLoginType
@@ -25,7 +22,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request, db *sql.DB, store *sessio
 	// Retrieve the user from the UserAuth table
 	var userID int
 	var passwordHash, salt string
-	err = db.QueryRow("SELECT id, password, salt FROM UserAuth WHERE username = $1", req.Username).Scan(&userID, &passwordHash, &salt)
+	err = db.QueryRow("SELECT user_id, password, salt FROM UserAuth WHERE username = $1", req.Username).Scan(&userID, &passwordHash, &salt)
 	if err == sql.ErrNoRows {
 		log.Println("User not found")
 		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
@@ -66,6 +63,12 @@ func UserLogin(w http.ResponseWriter, r *http.Request, db *sql.DB, store *sessio
 		http.Error(w, "Server error", http.StatusInternalServerError)
 		return
 	}
+
+	// Log session values for debugging
+	log.Println("Session values after login:")
+	log.Println("Authenticated:", session.Values["authenticated"])
+	log.Println("UserID:", session.Values["userID"])
+	log.Println("Username:", session.Values["username"])
 
 	// Respond with a success message
 	fmt.Fprintln(w, "User authenticated successfully")
