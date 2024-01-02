@@ -3,6 +3,7 @@
 /* Ensure a consistent color scheme, replace #your-primary-color with your actual primary color */
 :root {
   --primary-color: #f0f0f0;
+  --blue-color: #007bff; /* Define a blue color */
 }
 
 .dashboard-container {
@@ -41,15 +42,23 @@
   color: var(--primary-color); /* Use your primary color for h2 text */
 }
 
-/* You can add more specific styles for your widgets, such as for charts, lists, etc. */
+/* Logout button styles */
+.logout-section {
+  margin-top: 20px;
+}
 
-/* Example of a simple media query for smaller screens */
-@media (max-width: 600px) {
-  .dashboard-content {
-    flex-direction: column; /* Stack widgets vertically on smaller screens */
-  }
-  .widget {
-    margin-right: 0; /* Remove right margin on widgets for better spacing */
-  }
+.logout-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--blue-color); /* Use blue color for the logout button */
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.logout-btn:hover {
+  background-color: #0056b3; /* Darker shade of blue on hover */
 }
 

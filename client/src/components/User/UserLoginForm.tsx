@@ -1,15 +1,16 @@
+// UserLoginForm.tsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, Link } from 'react-router-dom';
 import './UserLoginForm.css';
 
 const UserLoginForm = () => {
-  const navigate =  useNavigate(); 
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Basic validation
@@ -44,6 +45,12 @@ const UserLoginForm = () => {
     }
   };
 
+  const handleLogout = () => {
+    // Implement logout logic here (clear tokens, reset state, etc.)
+    // For simplicity, let's just navigate to the home page for demonstration purposes.
+    navigate('/');
+  };
+
   return (
     <div className="container">
       <div className="info-section">
@@ -74,9 +81,17 @@ const UserLoginForm = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <button type="submit" className="submit-btn">Login</button>
+            <button type="submit" className="submit-btn">
+              Login
+            </button>
             {errorMessage && <div className="error-message">{errorMessage}</div>}
           </form>
+        </div>
+        {/* Logout button */}
+        <div className="logout-section">
+          <Link to="/" onClick={handleLogout}>
+            <button className="logout-btn">Logout</button>
+          </Link>
         </div>
       </div>
     </div>
