@@ -9,11 +9,12 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"github.com/gorilla/sessions"
 )
+
 // UserLogin handles user login requests
 func UserLogin(w http.ResponseWriter, r *http.Request, db *sql.DB, store *sessions.CookieStore) {
 	var req UserLoginType
-	err := json.NewDecoder(r.Body).Decode(&req)
-	if err != nil {
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		log.Println("Error decoding request:", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -22,20 +23,19 @@ func UserLogin(w http.ResponseWriter, r *http.Request, db *sql.DB, store *sessio
 	// Retrieve the user from the UserAuth table
 	var userID int
 	var passwordHash, salt string
-	err = db.QueryRow("SELECT user_id, password, salt FROM UserAuth WHERE username = $1", req.Username).Scan(&userID, &passwordHash, &salt)
-	if err == sql.ErrNoRows {
-		log.Println("User not found")
-		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
-		return
-	} else if err != nil {
-		log.Println("Error querying database:", err)
-		http.Error(w, "Server error", http.StatusInternalServerError)
+	if err := db.QueryRow("SELECT user_id, password, salt FROM UserAuth WHERE username = $1", req.Username).Scan(&userID, &passwordHash, &salt); err != nil {
+		if err == sql.ErrNoRows {
+			log.Println("User not found")
+			http.Error(w, "Invalid username or password", http.StatusUnauthorized)
+		} else {
+			log.Println("Error querying database:", err)
+			http.Error(w, "Server error", http.StatusInternalServerError)
+		}
 		return
 	}
 
 	// Compare the provided password with the stored hash using the retrieved salt
-	err = bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(req.Password+salt))
-	if err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(req.Password+salt)); err != nil {
 		log.Println("Password comparison failed:", err)
 		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
 		return
@@ -57,8 +57,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request, db *sql.DB, store *sessio
 	session.Values["username"] = req.Username
 
 	// Save the session
-	err = session.Save(r, w)
-	if err != nil {
+	if err := session.Save(r, w); err != nil {
 		log.Println("Error saving session:", err)
 		http.Error(w, "Server error", http.StatusInternalServerError)
 		return
@@ -89,8 +88,7 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request, store *sessions.Cooki
 	}
 
 	// Save the empty session to clear it
-	err = session.Save(r, w)
-	if err != nil {
+	if err := session.Save(r, w); err != nil {
 		log.Println("Error saving session:", err)
 		http.Error(w, "Server error", http.StatusInternalServerError)
 		return
