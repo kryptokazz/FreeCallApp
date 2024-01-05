@@ -63,15 +63,11 @@ func GetTopicByID(w http.ResponseWriter, r *http.Request) {
 }
 
 
-
-
-
-
 // CreateTopic creates a new topic
 func CreateTopic(w http.ResponseWriter, r *http.Request) {
     var newTopic Topic
-    err := json.NewDecoder(r.Body).Decode(&newTopic)
-    if err != nil {
+    // Decode the JSON request body
+    if err := json.NewDecoder(r.Body).Decode(&newTopic); err != nil {
         http.Error(w, err.Error(), http.StatusBadRequest)
         return
     }
@@ -79,6 +75,20 @@ func CreateTopic(w http.ResponseWriter, r *http.Request) {
     db := connectDB()
     defer db.Close()
 
+    // Validate that the user with the provided ID exists
+    var userExists bool
+    err := db.QueryRow("SELECT EXISTS (SELECT 1 FROM Users WHERE user_id = $1)", newTopic.UserID).Scan(&userExists)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    if !userExists {
+        http.Error(w, "User with the provided ID does not exist", http.StatusBadRequest)
+        return
+    }
+
+    // Insert the new topic into the database
     var topicID int
     err = db.QueryRow("INSERT INTO Topics (topic_name, user_id) VALUES ($1, $2) RETURNING topic_id", newTopic.TopicName, newTopic.UserID).Scan(&topicID)
     if err != nil {
@@ -86,7 +96,11 @@ func CreateTopic(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    json.NewEncoder(w).Encode(map[string]int{"topic_id": topicID})
+    // Respond with the newly created topic ID in JSON format
+    response := map[string]int{"topic_id": topicID}
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(http.StatusCreated)
+    json.NewEncoder(w).Encode(response)
 }
 
 // UpdateTopic updates a topic by ID

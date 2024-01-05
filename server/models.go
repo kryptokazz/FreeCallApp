@@ -70,14 +70,3 @@ type UserAuth struct {
     Salt      string `json:"salt"`
 }
 
-type Cookie struct {
-	Name string
-	Value string
-
-	MaxAge   int
-	Secure   bool
-	HttpOnly bool
-	SameSite SameSite
-	Raw      string
-	Unparsed []string // Raw text of unparsed attribute-value pairs
-}

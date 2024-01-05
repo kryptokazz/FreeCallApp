@@ -13,6 +13,6 @@
 /dist/
 /.vite/
 /src/old/
-
+go1.21.5.linux-amd64
 
 
