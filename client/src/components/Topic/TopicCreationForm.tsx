@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './TopicCreationForm.css';
+import { useAuth } from '../User/AuthContext'; // Update the path to match your AuthContext location
 
-interface TopicCreationFormProps {
-  user_id: number; // Pass user_id as a prop
-}
-
-const TopicCreationForm: React.FC<TopicCreationFormProps> = ({ user_id }) => {
+const TopicCreationForm: React.FC = () => {
+  const { user } = useAuth();
   const [topicName, setTopicName] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
       const body = {
-        user_id: user_id,
+        user_id: user?.user_id, // Access user_id from the user object
         topic_name: topicName
       };
 

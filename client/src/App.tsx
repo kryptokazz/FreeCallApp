@@ -1,5 +1,6 @@
 // App.tsx
 import React from 'react';
+import { AuthProvider } from './components/User/AuthContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import UserRegistrationForm from './components/User/UserRegistrationForm';
 import Dashboard from './components/User/Dashboard';
@@ -18,6 +19,7 @@ import Home from './Home';
 const App = () => {
   return (
     <Router>
+    <AuthProvider>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/user-registration" element={<UserRegistrationForm />} />
@@ -33,6 +35,7 @@ const App = () => {
         <Route path="/word-creation" element={<WordCreationForm />} />
         <Route path="/word-data" element={<WordDataListing />} />
       </Routes>
+      </AuthProvider>
     </Router>
   );
 };
