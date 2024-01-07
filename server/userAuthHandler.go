@@ -41,14 +41,16 @@ func UserLogin(w http.ResponseWriter, r *http.Request, db *sql.DB, store *sessio
 		return
 	}
 
-	// Authentication successful
 
 	// Create a session for the user
 	session, err := store.Get(r, "user-session")
+	log.Println("Retrieved user from UserAuth table:", userID)
+
 	if err != nil {
 		log.Println("Error getting session:", err)
 		http.Error(w, "Server error", http.StatusInternalServerError)
 		return
+
 	}
 
 	// Set session values

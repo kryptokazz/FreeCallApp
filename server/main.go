@@ -10,41 +10,45 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"github.com/joho/godotenv"
+	"os" // Add the missing import for "os"
 )
 
 // Assuming you have a global DB connection
 var db *sql.DB
-var store *sessions.CookieStore
+var store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
 
 func main() {
-    r := mux.NewRouter()
+	r := mux.NewRouter()
 
-    if err := godotenv.Load(); err != nil {
-        log.Println("No .env file found")
-    }
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found")
+	}
 
-    // Initialize the database connection
-    db = connectDB()
-    defer db.Close()
+	// Initialize the database connection
+	db = connectDB()
+	defer db.Close()
 
-    store = sessions.NewCookieStore([]byte("18073a03-a37e-4563-832d-92304277d31a"))
-    
-    // Serve static files
-    staticDir := "/static/"
-    r.PathPrefix(staticDir).Handler(http.StripPrefix(staticDir, http.FileServer(http.Dir("assets"))))
+	// Serve static files
+	staticDir := "/static/"
+	r.PathPrefix(staticDir).Handler(http.StripPrefix(staticDir, http.FileServer(http.Dir("assets"))))
 
-    // Register routes
-    registerRoutes(r)
+	// Register routes
+	registerRoutes(r)
 
-    // CORS configuration
-    corsObj := handlers.AllowedOrigins([]string{"*"})
-    methodsObj := handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS", "PUT", "DELETE"})
-    headersObj := handlers.AllowedHeaders([]string{"Content-Type", "X-Requested-With", "Authorization"})
+	// CORS configuration
+	corsObj := handlers.CORS(
+		handlers.AllowedOrigins([]string{"*"}),
+		handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS", "PUT", "DELETE"}),
+		handlers.AllowedHeaders([]string{"Content-Type", "X-Requested-With", "Authorization"}),
+		handlers.AllowCredentials(),
+	)
 
-    // Start the server
-    log.Println("Server is running on port 5000")
-    log.Fatal(http.ListenAndServe(":5000", handlers.CORS(corsObj, methodsObj, headersObj)(r)))
+	// Start the server
+	log.Println("Server is running on port 5000")
+	log.Fatal(http.ListenAndServe(":5000", corsObj(r)))
 }
+
+
 
 
 // registerRoutes registers all the routes
