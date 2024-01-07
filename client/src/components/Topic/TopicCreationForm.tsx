@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './TopicCreationForm.css';
-import { useAuth } from '../User/AuthContext'; // Update the path to match your AuthContext location
+import { useAuth } from '../User/AuthContext';
 
 const TopicCreationForm: React.FC = () => {
   const { user } = useAuth();
@@ -12,18 +12,20 @@ const TopicCreationForm: React.FC = () => {
 
     try {
       const body = {
-        user_id: user?.user_id, // Access user_id from the user object
-        topic_name: topicName
+        user_id: user?.user_id,
+        topic_name: topicName,
       };
 
-      const response = await axios.post("http://localhost:5000/topics", body);
+      const response = await axios.post('http://localhost:5000/topics', body, {
+        withCredentials: false, // Include credentials in the request
+      });
 
       if (response.status === 201) {
         // Handle success
         window.location.href = `/topic/${response.data.topic_id}`;
       } else {
         // Handle other responses or errors
-        console.error("Topic creation failed");
+        console.error('Topic creation failed');
       }
     } catch (err) {
       console.error(err.message);
