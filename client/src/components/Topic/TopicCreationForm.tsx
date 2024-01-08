@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './TopicCreationForm.css';
-import { useAuth } from '@/components/User/AuthContext';
+import { useAuth } from '@user/AuthContext';
 
 const TopicCreationForm: React.FC = () => {
   const { user } = useAuth();
