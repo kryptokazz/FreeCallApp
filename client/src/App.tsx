@@ -1,18 +1,18 @@
 import React from 'react';
-import { AuthProvider } from '@components/User/AuthContext'; // Updated import
+import { AuthProvider } from '@user/AuthContext'; // Updated import
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import UserRegistrationForm from '@components/User/UserRegistrationForm'; // Updated import
-import Dashboard from '@components/User/Dashboard'; // Updated import
-import UserLoginForm from '@components/User/UserLoginForm'; // Updated import
-import UserDataListing from '@components/User/UserDataListing'; // Updated import
-import TopicCreationForm from '@components/Topic/TopicCreationForm'; // Updated import
-import TopicDataListing from '@components/Topic/TopicDataListing'; // Updated import
-import SetCreationForm from '@components/Set/SetCreationForm'; // Updated import
-import SetDataListing from '@components/Set/SetDataListing'; // Updated import
-import FieldCreationForm from '@components/Field/FieldCreationForm'; // Updated import
-import FieldDataListing from '@components/Field/FieldDataListing'; // Updated import
-import WordCreationForm from '@components/Word/WordCreationForm'; // Updated import
-import WordDataListing from '@components/Word/WordDataListing'; // Updated import
+import UserRegistrationForm from '@user/UserRegistrationForm'; // Updated import
+import Dashboard from '@user/Dashboard'; // Updated import
+import UserLoginForm from '@user/UserLoginForm'; // Updated import
+import UserDataListing from '@user/UserDataListing'; // Updated import
+import TopicCreationForm from '@topic/TopicCreationForm'; // Updated import
+import TopicDataListing from '@topic/TopicDataListing'; // Updated import
+import SetCreationForm from '@set/SetCreationForm'; // Updated import
+import SetDataListing from '@set/SetDataListing'; // Updated import
+import FieldCreationForm from '@field/FieldCreationForm'; // Updated import
+import FieldDataListing from '@field/FieldDataListing'; // Updated import
+import WordCreationForm from '@word/WordCreationForm'; // Updated import
+import WordDataListing from '@word/WordDataListing'; // Updated import
 import Home from './Home';
 
 
