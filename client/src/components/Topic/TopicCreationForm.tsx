@@ -1,36 +1,40 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './TopicCreationForm.css';
-import { useAuth } from '../User/AuthContext';
+import { useAuth } from '@/components/User/AuthContext';
 
 const TopicCreationForm: React.FC = () => {
   const { user } = useAuth();
   const [topicName, setTopicName] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    try {
-      const body = {
-        user_id: user?.user_id,
-        topic_name: topicName,
-      };
+  try {
+    console.log('User before API request:', user);
 
-      const response = await axios.post('http://localhost:5000/topics', body, {
-        withCredentials: false, // Include credentials in the request
-      });
+    const body = {
+      user_id: user?.user_id,
+      topic_name: topicName,
+    };
 
-      if (response.status === 201) {
-        // Handle success
-        window.location.href = `/topic/${response.data.topic_id}`;
-      } else {
-        // Handle other responses or errors
-        console.error('Topic creation failed');
-      }
-    } catch (err) {
-      console.error(err.message);
+    const response = await axios.post('http://localhost:5000/topics', body, {
+      withCredentials: false, // Include credentials in the request
+    });
+
+    console.log('API Response:', response.data);
+
+    if (response.status === 201) {
+      // Handle success
+      window.location.href = `/topic/${response.data.topic_id}`;
+    } else {
+      // Handle other responses or errors
+      console.error('Topic creation failed');
     }
-  };
+  } catch (err) {
+    console.error(err.message);
+  }
+};
 
   return (
     <form onSubmit={handleSubmit} className="topic-creation-form">

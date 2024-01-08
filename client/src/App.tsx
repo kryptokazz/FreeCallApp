@@ -1,20 +1,21 @@
-// App.tsx
 import React from 'react';
-import { AuthProvider } from './components/User/AuthContext';
+import { AuthProvider } from '@components/User/AuthContext'; // Updated import
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import UserRegistrationForm from './components/User/UserRegistrationForm';
-import Dashboard from './components/User/Dashboard';
-import UserLoginForm from './components/User/UserLoginForm';
-import UserDataListing from './components/User/UserDataListing';
-import TopicCreationForm from './components/Topic/TopicCreationForm';
-import TopicDataListing from './components/Topic/TopicDataListing';
-import SetCreationForm from './components/Set/SetCreationForm';
-import SetDataListing from './components/Set/SetDataListing';
-import FieldCreationForm from './components/Field/FieldCreationForm';
-import FieldDataListing from './components/Field/FieldDataListing';
-import WordCreationForm from './components/Word/WordCreationForm';
-import WordDataListing from './components/Word/WordDataListing';
+import UserRegistrationForm from '@components/User/UserRegistrationForm'; // Updated import
+import Dashboard from '@components/User/Dashboard'; // Updated import
+import UserLoginForm from '@components/User/UserLoginForm'; // Updated import
+import UserDataListing from '@components/User/UserDataListing'; // Updated import
+import TopicCreationForm from '@components/Topic/TopicCreationForm'; // Updated import
+import TopicDataListing from '@components/Topic/TopicDataListing'; // Updated import
+import SetCreationForm from '@components/Set/SetCreationForm'; // Updated import
+import SetDataListing from '@components/Set/SetDataListing'; // Updated import
+import FieldCreationForm from '@components/Field/FieldCreationForm'; // Updated import
+import FieldDataListing from '@components/Field/FieldDataListing'; // Updated import
+import WordCreationForm from '@components/Word/WordCreationForm'; // Updated import
+import WordDataListing from '@components/Word/WordDataListing'; // Updated import
 import Home from './Home';
+
+
 
 const App = () => {
   return (
