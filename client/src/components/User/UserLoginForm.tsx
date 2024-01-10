@@ -52,7 +52,8 @@ const UserLoginForm = () => {
   };
 
   return (
-    <div className="container">
+
+    <section className="container">
       <div className="info-section">
         {/* You can add branding content here, similar to the signup form */}
         <h1>Welcome Back!</h1>
@@ -94,7 +95,7 @@ const UserLoginForm = () => {
           </Link>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

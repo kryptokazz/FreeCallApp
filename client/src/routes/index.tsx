@@ -1,18 +1,18 @@
 // src/routes/index.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import UserRegistrationForm from '@components/UserRegistrationForm';
-import UserLoginForm from '@components/UserLoginForm';
-import Dashboard from '@components/Dashboard';
-import UserDataListing from '@components/UserDataListing';
-import TopicCreationForm from '@components/TopicCreationForm';
-import TopicDataListing from '@components/TopicDataListing';
-import SetCreationForm from '@components/SetCreationForm';
-import SetDataListing from '@components/SetDataListing';
-import FieldCreationForm from '@components/FieldCreationForm';
-import FieldDataListing from '@components/FieldDataListing';
-import WordCreationForm from '@components/WordCreationForm';
-import WordDataListing from '@components/WordDataListing';
+import UserRegistrationForm from '@user/UserRegistrationForm';
+import UserLoginForm from '@user/UserLoginForm';
+import Dashboard from '@user/Dashboard';
+import UserDataListing from '@user/UserDataListing';
+import TopicCreationForm from '@topic/TopicCreationForm';
+import TopicDataListing from '@topic/TopicDataListing';
+import SetCreationForm from '@set/SetCreationForm';
+import SetDataListing from '@set/SetDataListing';
+import FieldCreationForm from '@field/FieldCreationForm';
+import FieldDataListing from '@field/FieldDataListing';
+import WordCreationForm from '@word/WordCreationForm';
+import WordDataListing from '@word/WordDataListing';
 
 const AppRouter = () => {
   return (

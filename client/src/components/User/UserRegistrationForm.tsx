@@ -1,6 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import './UserRegistrationForm.css';
+import './UserRegistrationForm.css';  // Assuming this is your styling file
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -113,11 +116,15 @@ const UserRegistrationForm = () => {
                 <div className="error-msg">Passwords do not match</div>
               )}
             </div>
-            <button type="submit" className="submit-btn">
+            <button type="submit" className="submit-btn" disabled={!validName || !validPwd || !validMatch}>
               Create Account
             </button>
             {errMsg && <div className="error-msg">{errMsg}</div>}
-            {success && <div className="success-msg">Account created successfully!</div>}
+            {success && (
+              <div className="success-msg">
+                Account created successfully! <a href="#">Sign In</a>
+              </div>
+            )}
           </form>
         </div>
       </div>
