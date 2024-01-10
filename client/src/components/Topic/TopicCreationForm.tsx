@@ -6,35 +6,55 @@ import { useAuth } from '@user/AuthContext';
 const TopicCreationForm: React.FC = () => {
   const { user } = useAuth();
   const [topicName, setTopicName] = useState('');
+  const [topics, setTopics] = useState([]); // Local state for created topics
 
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  try {
-    console.log('User before API request:', user);
+    try {
+      console.log('User before API request:', user);
 
-    const body = {
-      user_id: user?.user_id,
-      topic_name: topicName,
-    };
+      // Simulating API request, using local state for simplicity
+      const newTopic = {
+        topic_id: Date.now(), // Use a unique identifier (e.g., timestamp) for simplicity
+        topic_name: topicName,
+        user_id: user?.user_id,
+      };
 
-    const response = await axios.post('http://localhost:5000/topics', body, {
-      withCredentials: false, // Include credentials in the request
-    });
+      // Update local state with the new topic
+      setTopics([...topics, newTopic]);
 
-    console.log('API Response:', response.data);
+      const body = {
+        user_id: user?.user_id,
+        topic_name: topicName,
+      };
 
-    if (response.status === 201) {
-      // Handle success
-      window.location.href = `/topic/${response.data.topic_id}`;
-    } else {
-      // Handle other responses or errors
-      console.error('Topic creation failed');
+      // Simulated response data
+      const responseData = {
+        status: 201,
+        data: {
+          topic_id: newTopic.topic_id,
+        },
+      };
+
+      console.log('API Response:', responseData.data);
+
+      if (responseData.status === 201) {
+        // Handle success
+        window.location.href = `/topic/${responseData.data.topic_id}`;
+      } else {
+        // Handle other responses or errors
+        console.error('Topic creation failed');
+      }
+
+      // Clear the input field after submission
+      setTopicName('');
+
+      console.log('New Topic:', newTopic);
+    } catch (err) {
+      console.error(err.message);
     }
-  } catch (err) {
-    console.error(err.message);
-  }
-};
+  };
 
   return (
     <form onSubmit={handleSubmit} className="topic-creation-form">
@@ -47,6 +67,16 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         />
       </label>
       <button type="submit">Create Topic</button>
+
+      {/* Display created topics */}
+      <div className="created-topics">
+        <h2>Created Topics</h2>
+        <ul>
+          {topics.map((topic) => (
+            <li key={topic.topic_id}>{topic.topic_name}</li>
+          ))}
+        </ul>
+      </div>
     </form>
   );
 };
