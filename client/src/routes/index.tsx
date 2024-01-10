@@ -23,6 +23,7 @@ const AppRouter = () => {
         <Route path="/user-data" element={<UserDataListing />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/topic-creation" element={<TopicCreationForm />} />
+	<Route path="/topic-creation:topicId" element={<TopicCreationForm />} />
         <Route path="/topic-data" element={<TopicDataListing />} />
         <Route path="/set-creation" element={<SetCreationForm />} />
         <Route path="/set-data" element={<SetDataListing />} />
