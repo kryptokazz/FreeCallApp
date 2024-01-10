@@ -5,13 +5,17 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "paths": {
-    "@components/*": ["./src/components/*"]
+      "@components/*": ["./src/components/*"],
+      "@user/*": ["./src/User/*"],
+      "@topic/*": ["./src/Topic/*"],
+      "@set/*": ["./src/Set/*"],
+      "@field/*": ["./src/Field/*"],
+      "@word/*": ["./src/Word/*"]
     },
-
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "node", // Change to "node" for better compatibility
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -27,3 +31,4 @@
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
+
