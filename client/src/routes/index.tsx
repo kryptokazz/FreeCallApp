@@ -1,6 +1,8 @@
 // src/routes/index.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import UserRegistrationForm from '@user/UserRegistrationForm';
 import UserLoginForm from '@user/UserLoginForm';
 import Dashboard from '@user/Dashboard';
@@ -14,8 +16,13 @@ import FieldDataListing from '@field/FieldDataListing';
 import WordCreationForm from '@word/WordCreationForm';
 import WordDataListing from '@word/WordDataListing';
 
+
+const queryClient = new QueryClient();
+
+
 const AppRouter = () => {
   return (
+   <QueryClientProvider client={queryClient}> 
     <Router>
       <Routes>
         <Route path="/user-registration" element={<UserRegistrationForm />} />
@@ -33,6 +40,8 @@ const AppRouter = () => {
         <Route path="/word-data" element={<WordDataListing />} />
       </Routes>
     </Router>
+    <ReactQueryDevtools initialIsOpen={true} /> 
+    </QueryClientProvider>
   );
 };
 

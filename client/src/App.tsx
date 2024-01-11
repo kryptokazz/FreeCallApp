@@ -1,26 +1,29 @@
 import React from 'react';
-import { AuthProvider } from '@user/AuthContext'; // Updated import
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider } from '@user/AuthContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import UserRegistrationForm from '@user/UserRegistrationForm'; // Updated import
-import Dashboard from '@user/Dashboard'; // Updated import
-import UserLoginForm from '@user/UserLoginForm'; // Updated import
-import UserDataListing from '@user/UserDataListing'; // Updated import
-import TopicCreationForm from '@topic/TopicCreationForm'; // Updated import
-import TopicDataListing from '@topic/TopicDataListing'; // Updated import
-import SetCreationForm from '@set/SetCreationForm'; // Updated import
-import SetDataListing from '@set/SetDataListing'; // Updated import
-import FieldCreationForm from '@field/FieldCreationForm'; // Updated import
-import FieldDataListing from '@field/FieldDataListing'; // Updated import
-import WordCreationForm from '@word/WordCreationForm'; // Updated import
-import WordDataListing from '@word/WordDataListing'; // Updated import
+import UserRegistrationForm from '@user/UserRegistrationForm';
+import Dashboard from '@user/Dashboard';
+import UserLoginForm from '@user/UserLoginForm';
+import UserDataListing from '@user/UserDataListing';
+import TopicCreationForm from '@topic/TopicCreationForm';
+import TopicDataListing from '@topic/TopicDataListing';
+import SetCreationForm from '@set/SetCreationForm';
+import SetDataListing from '@set/SetDataListing';
+import FieldCreationForm from '@field/FieldCreationForm';
+import FieldDataListing from '@field/FieldDataListing';
+import WordCreationForm from '@word/WordCreationForm';
+import WordDataListing from '@word/WordDataListing';
 import Home from './Home';
 
+const queryClient = new QueryClient();
 
 
 const App = () => {
   return (
-    <Router>
+	  <QueryClientProvider client={queryClient}> 
     <AuthProvider>
+    <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/user-registration" element={<UserRegistrationForm />} />
@@ -36,8 +39,9 @@ const App = () => {
         <Route path="/word-creation" element={<WordCreationForm />} />
         <Route path="/word-data" element={<WordDataListing />} />
       </Routes>
-      </AuthProvider>
     </Router>
+    </AuthProvider>
+    </QueryClientProvider> 
   );
 };
 
