@@ -1,4 +1,5 @@
 import React from 'react';
+import AppRouter from './routes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@user/AuthContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
