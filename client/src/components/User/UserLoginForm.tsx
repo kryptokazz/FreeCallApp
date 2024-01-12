@@ -1,26 +1,7 @@
+// UserLoginForm.tsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
-
 import './UserLoginForm.css';
-
-const loginUser = async ({ username, password }) => {
-  const response = await fetch('http://localhost:5000/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include', // Include credentials in the request
-    body: JSON.stringify({ username, password }),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => null);
-    throw new Error(errorData?.error || 'Login failed');
-  }
-
-  return response.json();
-};
 
 const UserLoginForm = () => {
   const navigate = useNavigate();
@@ -29,18 +10,7 @@ const UserLoginForm = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const mutation = useMutation(loginUser, {
-    onSuccess: () => {
-      console.log('Login successful');
-      navigate('/dashboard');
-    },
-    onError: (error) => {
-      console.error('Error during login:', error);
-      setErrorMessage(error.message || 'Internal server error');
-    },
-  });
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Basic validation
@@ -49,10 +19,40 @@ const UserLoginForm = () => {
       return;
     }
 
-    mutation.mutate({ username, password });
-  };  return (
+    try {
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-    <section className="container">
+      if (response.ok) {
+        // Handle successful login, e.g., redirect or store authentication token
+        console.log('Login successful');
+
+        // Redirect to a different page after successful login
+        navigate('/dashboard');
+      } else {
+        // Handle failed login, display an error message
+        const errorData = await response.json().catch(() => null); // Handle non-JSON response
+        setErrorMessage(errorData?.error || 'Login failed');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      setErrorMessage('Internal server error');
+    }
+  };
+
+  const handleLogout = () => {
+    // Implement logout logic here (clear tokens, reset state, etc.)
+    // For simplicity, let's just navigate to the home page for demonstration purposes.
+    navigate('/');
+  };
+
+  return (
+    <div className="container">
       <div className="info-section">
         {/* You can add branding content here, similar to the signup form */}
         <h1>Welcome Back!</h1>
@@ -87,10 +87,17 @@ const UserLoginForm = () => {
             {errorMessage && <div className="error-message">{errorMessage}</div>}
           </form>
         </div>
-	</div>
-    </section>
+        {/* Logout button */}
+        <div className="logout-section">
+          <Link to="/" onClick={handleLogout}>
+            <button className="logout-btn">Logout</button>
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 };
 
 export default UserLoginForm;
+
 
