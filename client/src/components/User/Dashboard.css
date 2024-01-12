@@ -3,7 +3,11 @@
 /* Ensure a consistent color scheme, replace #your-primary-color with your actual primary color */
 :root {
   --primary-color: #f0f0f0;
-  --blue-color: #007bff; /* Define a blue color */
+  --blue-color: #007bff;
+  --dark-blue-color: #0056b3;
+  --widget-bg: #f9f9f9;
+  --widget-border: #ddd;
+  --widget-shadow: rgba(0, 0, 0, 0.2);
 }
 
 .dashboard-container {
@@ -26,20 +30,19 @@
   flex: 1;
   padding: 20px;
   margin-right: 20px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--widget-border);
   border-radius: 8px;
-  background-color: #f9f9f9;
-  transition: box-shadow 0.3s ease; /* Add a smooth transition for hover effect */
+  background-color: var(--widget-bg);
+  transition: box-shadow 0.3s ease;
 }
 
-/* Add hover effect */
 .widget:hover {
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 15px var(--widget-shadow);
 }
 
 .widget h2 {
   margin-bottom: 10px;
-  color: var(--primary-color); /* Use your primary color for h2 text */
+  color: var(--primary-color);
 }
 
 /* Logout button styles */
@@ -52,13 +55,13 @@
   padding: 10px;
   border: none;
   border-radius: 4px;
-  background-color: var(--blue-color); /* Use blue color for the logout button */
+  background-color: var(--blue-color);
   color: white;
   cursor: pointer;
   font-size: 16px;
 }
 
 .logout-btn:hover {
-  background-color: #0056b3; /* Darker shade of blue on hover */
+  background-color: var(--dark-blue-color);
 }
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import AppRouter from './routes';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@user/AuthContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import UserRegistrationForm from '@user/UserRegistrationForm';
@@ -17,12 +16,9 @@ import WordCreationForm from '@word/WordCreationForm';
 import WordDataListing from '@word/WordDataListing';
 import Home from './Home';
 
-const queryClient = new QueryClient();
-
 
 const App = () => {
   return (
-	  <QueryClientProvider client={queryClient}> 
     <AuthProvider>
     <Router>
       <Routes>
@@ -42,7 +38,6 @@ const App = () => {
       </Routes>
     </Router>
     </AuthProvider>
-    </QueryClientProvider> 
   );
 };
 
