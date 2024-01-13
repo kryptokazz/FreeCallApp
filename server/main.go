@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"database/sql"
 	"github.com/gorilla/handlers"
+	"os"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"github.com/joho/godotenv"
-	"os" // Add the missing import for "os"
 )
 
 // Assuming you have a global DB connection
@@ -24,9 +24,19 @@ func main() {
 		log.Println("No .env file found")
 	}
 
+	// Print the SESSION_KEY for debugging
+	log.Println("SESSION_KEY:", os.Getenv("SESSION_KEY"))
+
 	// Initialize the database connection
 	db = connectDB()
 	defer db.Close()
+
+	// Set session key in the store
+	store.Options = &sessions.Options{
+		Path:     "/",
+		MaxAge:   3600, // Set your desired session timeout
+		HttpOnly: true,
+	}
 
 	// Serve static files
 	staticDir := "/static/"
@@ -47,8 +57,6 @@ func main() {
 	log.Println("Server is running on port 5000")
 	log.Fatal(http.ListenAndServe(":5000", corsObj(r)))
 }
-
-
 
 
 // registerRoutes registers all the routes
