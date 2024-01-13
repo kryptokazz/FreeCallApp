@@ -13,7 +13,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// Assuming you have a global DB connection
 var db *sql.DB
 var store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
 
@@ -24,13 +23,17 @@ func main() {
 		log.Println("No .env file found")
 	}
 
-	// Print the SESSION_KEY for debugging
-	log.Println("SESSION_KEY:", os.Getenv("SESSION_KEY"))
-
 	// Initialize the database connection
 	db = connectDB()
-	defer db.Close()
 
+	// Defer the closure of the database connection to ensure it's closed after the server stops
+	defer func() {
+		if err := db.Close(); err != nil {
+			log.Println("Error closing the database connection:", err)
+		}
+	}()
+
+   store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
 	// Set session key in the store
 	store.Options = &sessions.Options{
 		Path:     "/",
@@ -57,6 +60,7 @@ func main() {
 	log.Println("Server is running on port 5000")
 	log.Fatal(http.ListenAndServe(":5000", corsObj(r)))
 }
+
 
 
 // registerRoutes registers all the routes
