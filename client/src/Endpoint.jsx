@@ -19,7 +19,9 @@ const Home = () => {
           <li><Link to="/field-data">Field Data</Link></li>
           <li><Link to="/word-creation">Word Creation</Link></li>
           <li><Link to="/word-data">Word Data</Link></li>
-          {/* Add other links as needed */}
+          <li><Link to="/data"> Data </Link></li>
+
+	  
         </ul>
       </nav>
     </div>

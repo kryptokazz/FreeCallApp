@@ -1,5 +1,6 @@
 import React from 'react';
 import AppRouter from './routes';
+import DataListing from '@data/DataListing'; 
 import { AuthProvider } from '@user/AuthContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import UserRegistrationForm from '@user/UserRegistrationForm';
@@ -24,6 +25,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
 	<Route path="/endpoint" element={<Endpoint/>} />
+	<Route path="datalisting" element={<DataListing/>} /> 
         <Route path="/user-registration" element={<UserRegistrationForm />} />
         <Route path="/user-login" element={<UserLoginForm />} />
         <Route path="/user-data" element={<UserDataListing />} />

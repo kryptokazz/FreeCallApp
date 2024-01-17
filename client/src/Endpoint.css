@@ -5,21 +5,28 @@
   --font-family: 'Inter', sans-serif;
 }
 
-* {
-  box-sizing: border-box; /* Ensure box sizing includes padding and borders */
+
+html {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  color: var(--text-color);
+  background-color: var(--background-color);
+  text-rendering: optimizeLegibility;
 }
+
+
+
 
 body {
   margin: 0;
   font-family: var(--font-family);
   color: var(--text-color);
   background-color: var(--background-color);
-  display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   text-rendering: optimizeLegibility;
-  display: flex; /* Add display: flex; for vertical centering */
 }
 
 .home-container {
