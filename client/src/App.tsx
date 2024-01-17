@@ -15,7 +15,7 @@ import FieldDataListing from '@field/FieldDataListing';
 import WordCreationForm from '@word/WordCreationForm';
 import WordDataListing from '@word/WordDataListing';
 import Home from './Home';
-
+import Endpoint from './Endpoint';
 
 const App = () => {
   return (
@@ -23,6 +23,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+	<Route path="/endpoint" element={<Endpoint/>} />
         <Route path="/user-registration" element={<UserRegistrationForm />} />
         <Route path="/user-login" element={<UserLoginForm />} />
         <Route path="/user-data" element={<UserDataListing />} />
