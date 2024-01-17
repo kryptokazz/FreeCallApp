@@ -13,6 +13,7 @@ export default defineConfig({
       '@word': path.resolve(__dirname, 'src/components/Word'),
       '@set': path.resolve(__dirname, 'src/components/Set'),
       '@topic': path.resolve(__dirname, 'src/components/Topic'),
+      '@data' : path.resolve(__dirname, 'src/components/Data'), 
     },
   },
   plugins: [react(), tsconfigPaths()],
