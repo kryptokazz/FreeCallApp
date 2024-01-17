@@ -1,32 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// File: /src/components/SetDataListing.tsx
+import React from 'react';
+import DataListing from '@data/DataListing';
 
-const SetDataListing  = () => {
-  const [sets, setSets] = useState([]);
-
-const getSet = async () => {
-    try {
-        const response = await axios.get("http://localhost:5000/sets"); 
-        setSets(response.data);
-    } catch (err) {
-        console.error(err.message);
-    }
-};
-
-
-  useEffect(() => {
-      getSet();
-  }, []);
-
+const SetDataListing: React.FC = () => {
   return (
-    <div>
-      <h2>Set Data Listing</h2>
-      <ul>
-        {sets.map((set) => (
-          <li key={set.set_id}>{set.set_name}</li>
-        ))}
-      </ul>
-    </div>
+    <DataListing
+      endpoint="sets"
+      keyField="set_id"
+      displayField="set_name"
+      title="Sets Data Listing"
+    />
   );
 };
 
