@@ -42,40 +42,36 @@ func UserLogin(w http.ResponseWriter, r *http.Request, db *sql.DB, store *sessio
 	}
 
 
-	// Create a session for the user
-	session, err := store.Get(r, "user-session")
-	log.Println("Retrieved user from UserAuth table:", userID)
+// Create a session for the user
+    session, err := store.Get(r, "user-session")
+    if err != nil {
+        log.Println("Error getting session:", err)
+        http.Error(w, "Failed to create a session", http.StatusInternalServerError)
+        return
+    }
 
-	if err != nil {
-		log.Println("Error getting session:", err)
-		http.Error(w, "Server error", http.StatusInternalServerError)
-		return
+    // Set session values
+    session.Values["authenticated"] = true
+    session.Values["userID"] = userID
+    session.Values["username"] = req.Username
 
-	}
+    // Save the session
+    if err := session.Save(r, w); err != nil {
+        log.Println("Error saving session:", err)
+        http.Error(w, "Failed to save the session", http.StatusInternalServerError)
+        return
+    }
 
-	// Set session values
-	session.Values["authenticated"] = true
-	session.Values["userID"] = userID
-	session.Values["username"] = req.Username
+    // Log session values for debugging
+    log.Println("Session values after login:")
+    log.Println("Authenticated:", session.Values["authenticated"])
+    log.Println("UserID:", session.Values["userID"])
+    log.Println("Username:", session.Values["username"])
 
-	// Save the session
-	if err := session.Save(r, w); err != nil {
-		log.Println("Error saving session:", err)
-		http.Error(w, "Server error", http.StatusInternalServerError)
-		return
-	}
+    // Respond with a success message
+    fmt.Fprintln(w, "User authenticated successfully")
+}// LogoutHandler handles user logout requests
 
-	// Log session values for debugging
-	log.Println("Session values after login:")
-	log.Println("Authenticated:", session.Values["authenticated"])
-	log.Println("UserID:", session.Values["userID"])
-	log.Println("Username:", session.Values["username"])
-
-	// Respond with a success message
-	fmt.Fprintln(w, "User authenticated successfully")
-}
-
-// LogoutHandler handles user logout requests
 func LogoutHandler(w http.ResponseWriter, r *http.Request, store *sessions.CookieStore) {
 	session, err := store.Get(r, "user-session")
 	if err != nil {

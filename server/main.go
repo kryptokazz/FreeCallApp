@@ -14,7 +14,7 @@ import (
 )
 
 var db *sql.DB
-var store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
+var store *sessions.CookieStore
 
 func main() {
 	r := mux.NewRouter()
@@ -22,10 +22,19 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found")
 	}
+	
+	store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
+store.Options = &sessions.Options{
+    Path:     "/",
+    MaxAge:   3600, // Set your desired session timeout
+    HttpOnly: true,
+    SameSite: http.SameSiteNoneMode,
+    Secure:   false, // Set to true if using HTTPS
+}
+
 
 	// Initialize the database connection
-	db = connectDB()
-
+        db = connectDB() 
 	// Defer the closure of the database connection to ensure it's closed after the server stops
 	defer func() {
 		if err := db.Close(); err != nil {
@@ -33,13 +42,6 @@ func main() {
 		}
 	}()
 
-   store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
-	// Set session key in the store
-	store.Options = &sessions.Options{
-		Path:     "/",
-		MaxAge:   3600, // Set your desired session timeout
-		HttpOnly: true,
-	}
 
 	// Serve static files
 	staticDir := "/static/"
@@ -115,6 +117,7 @@ func serveStaticFile(w http.ResponseWriter, r *http.Request, fileName, contentTy
     w.Header().Set("Content-Type", contentType+"; charset=utf-8")
     http.ServeFile(w, r, filePath)
 }
+
 
 
 
