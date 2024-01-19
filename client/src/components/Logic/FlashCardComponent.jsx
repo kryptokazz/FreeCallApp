@@ -10,6 +10,7 @@ const FlashCardComponent = () => {
   const [inputTerm, setInputTerm] = useState('');
   const [showUI, setShowUI] = useState(true);
   const [timerStarted, setTimerStarted] = useState(false);
+  const [countdown, setCountdown] = useState(5); // Initial countdown value in seconds
 
   const addTerm = () => {
     const updatedPairs = [...pairs];
@@ -47,10 +48,17 @@ const FlashCardComponent = () => {
   };
 
   const startTimer = () => {
-    setTimeout(() => {
-      setShowUI(false);
-      // Perform actions after the timer expires (e.g., retrieve terms)
-    }, 5000); // Adjust the time (in milliseconds) according to your needs
+    setCountdown(5); // Reset countdown when the timer starts
+    const timer = setInterval(() => {
+      setCountdown((prevCountdown) => {
+        if (prevCountdown === 1) {
+          setShowUI(false);
+          clearInterval(timer);
+          // Perform actions after the timer expires (e.g., retrieve terms)
+        }
+        return prevCountdown - 1;
+      });
+    }, 1000); // Update the countdown every second (1000 milliseconds)
   };
 
   const handleStartTest = () => {
@@ -64,6 +72,11 @@ const FlashCardComponent = () => {
       startTimer();
     }
   }, [timerStarted, showUI]);
+
+  useEffect(() => {
+    console.log(`Countdown: ${countdown} seconds`);
+  }, [countdown]);
+
 
   return (
     <div className={`flash-card-container ${showUI ? '' : 'hidden'}`}>
@@ -111,4 +124,3 @@ const FlashCardComponent = () => {
 };
 
 export default FlashCardComponent;
-
