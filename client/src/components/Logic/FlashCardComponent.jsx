@@ -9,6 +9,7 @@ const FlashCardComponent = () => {
   const [cards, setCards] = useState([]);
   const [inputTerm, setInputTerm] = useState('');
   const [showUI, setShowUI] = useState(true);
+  const [timerStarted, setTimerStarted] = useState(false);
 
   const addTerm = () => {
     const updatedPairs = [...pairs];
@@ -52,14 +53,59 @@ const FlashCardComponent = () => {
     }, 5000); // Adjust the time (in milliseconds) according to your needs
   };
 
+  const handleStartTest = () => {
+    setTimerStarted(true);
+    startTimer();
+    console.log('Timer started');
+  };
+
   useEffect(() => {
-    startTimer(); // Start the timer when the component mounts
-    // You can add other dependencies for useEffect if needed
-  }, []); // Empty dependency array ensures that this effect runs only once on mount
+    if (timerStarted && showUI) {
+      startTimer();
+    }
+  }, [timerStarted, showUI]);
 
   return (
     <div className={`flash-card-container ${showUI ? '' : 'hidden'}`}>
-      {/* ... (rest of the component) */}
+      <h1 className="heading">Flash Card App</h1>
+      <div className="terms-container">
+        {pairs[0].terms.map((term, termIndex) => (
+          <div key={termIndex} className="term-item">
+            <input
+              type="text"
+              placeholder={`Term ${termIndex + 1}`}
+              value={term}
+              onChange={(e) => handleTermChange(termIndex, e.target.value)}
+              className="input"
+            />
+            <button onClick={() => removeTerm(termIndex)} className="remove-button">
+              Remove Term
+            </button>
+          </div>
+        ))}
+      </div>
+      <button onClick={addTerm} className="button">
+        Add Term
+      </button>
+      <button onClick={createCard} className="button">
+        Create Card
+      </button>
+
+      <div className="cards-container">
+        <h2 className="cards-heading">Flash Cards</h2>
+        {cards.map((card, index) => (
+          <div key={index} className="card-item">
+            <FlashCard card={card} onDelete={() => removeCard(index)} />
+            {index < cards.length - 1 && <hr className="hr" />}
+          </div>
+        ))}
+      </div>
+
+      {!timerStarted && (
+        <button onClick={handleStartTest} className="button">
+          Start Test
+        </button>
+      )}
     </div>
   );
 };
