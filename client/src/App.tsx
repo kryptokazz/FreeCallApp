@@ -17,6 +17,7 @@ import WordCreationForm from '@word/WordCreationForm';
 import WordDataListing from '@word/WordDataListing';
 import Home from './Home';
 import Endpoint from './Endpoint';
+import FlashCardComponent from '@logic/FlashCardComponent';
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
 	<Route path="/endpoint" element={<Endpoint/>} />
 	<Route path="datalisting" element={<DataListing/>} /> 
         <Route path="/user-registration" element={<UserRegistrationForm />} />
+	<Route path="/logic" element={<FlashCardComponent/>} />
         <Route path="/user-login" element={<UserLoginForm />} />
         <Route path="/user-data" element={<UserDataListing />} />
         <Route path="/topic-creation" element={<TopicCreationForm />} />

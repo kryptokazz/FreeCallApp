@@ -14,6 +14,7 @@ export default defineConfig({
       '@set': path.resolve(__dirname, 'src/components/Set'),
       '@topic': path.resolve(__dirname, 'src/components/Topic'),
       '@data' : path.resolve(__dirname, 'src/components/Data'), 
+      '@logic' : path.resolve(__dirname, 'src/components/Logic'), 
     },
   },
   plugins: [react(), tsconfigPaths()],
