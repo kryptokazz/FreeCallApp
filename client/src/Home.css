@@ -1,112 +1,65 @@
-/* styles.css */
+/* App.css */
 
-/* Base styling */
 body {
+  margin: 0;
   font-family: 'Arial', sans-serif;
-  background-color: #f5f5f5;
-  color: #333;
 }
 
-
-/* Header styling */
-header {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px;
-  display: flex;
-  justify-content: center; /* Center content horizontally */
-  align-items: center; /* Center content vertically */
+.app {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-/* Center align text inside h1 */
-header h1 {
-  margin: 0; /* Remove default margin */
-}
-
-
-/* Tech-Powered Learning section */
-#tech-powered-learning {
-  margin-bottom: 20px;
-}
-
-/* Introduction section */
-#introduction {
-  margin-bottom: 30px;
-}
-
-/* Why Choose FreeCallApp section */
-#why-choose-freecallapp {
-  margin-bottom: 30px;
-}
-
-/* Our Vision section */
-#our-vision {
-  margin-bottom: 30px;
-}
-
-/* Join the Learning Revolution section */
-#join-the-revolution {
-  margin-bottom: 30px;
-}
-
-/* API Reference section */
-#api-reference {
-  margin-bottom: 30px;
-}
-
-/* Future Features and API Endpoints To-Do List section */
-#future-features {
-  margin-bottom: 30px;
-}
-
-/* Additional Functionalities section */
-#additional-functionalities {
-  margin-bottom: 30px;
-}
-
-/* Advanced Features section */
-#advanced-features {
-  margin-bottom: 30px;
-}
-
-/* Security Enhancements section */
-#security-enhancements {
-  margin-bottom: 30px;
-}
-
-/* Documentation and Maintenance section */
-#documentation {
-  margin-bottom: 30px;
-}
-
-/* Getting Started section */
-#getting-started {
-  margin-bottom: 30px;
-}
-
-/* Footer styling */
-footer {
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
+.header {
   text-align: center;
 }
 
-/* API Reference table styling */
-.api-table {
-  width: 100%;
-  border-collapse: collapse;
+.buttons {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.signup, .login {
+  margin-left: 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.main {
+  display: flex;
+  justify-content: space-between;
   margin-top: 20px;
 }
 
-.api-table th, .api-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
+.left, .right {
+  width: 45%;
 }
 
-.api-table th {
-  background-color: #007bff;
-  color: #fff;
+.right {
+  text-align: justify;
+}
+
+.why-choose {
+  margin-top: 20px;
+}
+
+.feature {
+  margin-bottom: 20px;
+}
+
+.vision, .join-revolution {
+  margin-top: 20px;
+}
+
+.footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+button {
+  padding: 10px;
+  cursor: pointer;
 }
 
