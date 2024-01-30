@@ -1,7 +1,6 @@
-/* FlashCardComponent.css */
-
 .flash-card-container {
-  max-width: 600px;
+  width: 80%;
+  max-width: 800px;
   margin: auto;
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -18,40 +17,37 @@
 }
 
 .terms-container {
+  width: 100%;
   margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
 }
 
 .term-item {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  margin: 5px; 
 }
 
 .input {
-  flex: 1;
-  width: 200px;
+  width: 100%;
+  max-width: 400px;
+  padding: 15px;
+  font-size: 16px;
   margin-right: 10px;
-  padding: 8px;
-  font-size: 14px;
 }
 
 .remove-button,
-.button {
-  padding: 8px 10px;
-  font-size: 14px;
+.button,
+.start-test-button {
+  width: 100%;
+  max-width: 400px;
+  padding: 15px;
+  font-size: 16px;
   cursor: pointer;
   border: none;
-  border-radius: 5px; /* Rounded corners */
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  margin-bottom: 15px;
 }
-
-
-.hidden {
-  display: none;
-}
-
 
 .remove-button {
   background: #dc3545;
@@ -61,15 +57,15 @@
 .button {
   background: #007bff;
   color: #fff;
-  margin-right: 10px;
+  margin: 15px;
 }
 
 .cards-container {
+  width: 100%;
   margin-top: 20px;
-  display: flex; 
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .cards-heading {
@@ -79,13 +75,17 @@
 }
 
 .card-item {
-  margin-bottom: 10px;
-  margin-right: 10px;
+  width: 100%;
 }
 
 .hr {
   border: 0;
   border-top: 1px solid #ccc;
+  width: 100%;
   margin: 10px 0;
+}
+
+.start-test-button {
+  margin-top: 20px;
 }
 
