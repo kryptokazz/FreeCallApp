@@ -1,4 +1,3 @@
-// FlashCard.jsx
 
 import React from 'react';
 
@@ -15,4 +14,3 @@ const FlashCard = ({ card, onDelete }) => {
 };
 
 export default FlashCard;
-

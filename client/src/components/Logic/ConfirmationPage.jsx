@@ -1,53 +1,41 @@
 import React, { useState } from 'react';
 
-const ConfirmationPage = ({ terms, onSubmit }) => {
-  const [rememberedTerms, setRememberedTerms] = useState([]);
-  const [score, setScore] = useState(0);
+const ConfirmationPage = ({ cards, onSubmit }) => {
+  const [rememberedCards, setRememberedCards] = useState([]);
 
-  // Handle checkbox change
-  const handleTermClick = (term) => {
-    if (!rememberedTerms.includes(term)) {
-      setRememberedTerms([...rememberedTerms, term]);
-    } else {
-      setRememberedTerms(rememberedTerms.filter((t) => t !== term));
-    }
-  };
-
-  // Calculate score
-  const calculateScore = () => {
-    const totalTerms = terms.length;
-    const correctlyRemembered = rememberedTerms.length;
-    const percentage = (correctlyRemembered / totalTerms) * 100;
-    setScore(percentage);
-  };
+// Handle checkbox change
+const handleCardClick = (cardIndex) => {
+  if (!rememberedCards.includes(cardIndex)) {
+    setRememberedCards([...rememberedCards, cardIndex]);
+  } else {
+    setRememberedCards(rememberedCards.filter((index) => index !== cardIndex));
+  }
+};
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    calculateScore();
     // Submit the results
-    onSubmit(score);
+    onSubmit(rememberedCards);
   };
 
   return (
     <div className="confirmation-page">
       <h2>Confirm Your Memory</h2>
       <form onSubmit={handleSubmit}>
-        {terms.map((term, index) => (
+        {cards.map((card, index) => (
           <div key={index}>
             <input
               type="checkbox"
-              id={`term-${index}`}
-              value={term}
-              checked={rememberedTerms.includes(term)}
-              onChange={() => handleTermClick(term)}
+              id={`card-${index}`}
+              checked={rememberedCards.includes(index)}
+              onChange={() => handleCardClick(index)}
             />
-            <label htmlFor={`term-${index}`}>{term}</label>
+            <label htmlFor={`card-${index}`}>Card {index + 1}</label>
           </div>
         ))}
         <button type="submit">Submit</button>
       </form>
-      {score > 0 && <p>Your score: {score}%</p>}
     </div>
   );
 };
