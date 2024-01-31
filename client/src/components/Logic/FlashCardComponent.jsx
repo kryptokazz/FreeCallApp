@@ -14,6 +14,7 @@ const FlashCardComponent = () => {
   const [customTime, setCustomTime] = useState('');
   const [evaluationMode, setEvaluationMode] = useState(false);
   const [sessionScore, setSessionScore] = useState(null);
+  const [rememberedCards, setRememberedCards] = useState([]); // Added rememberedCards state
 
   const createTopic = () => {
     if (newTopicTitle.trim() !== '') {
@@ -41,31 +42,36 @@ const FlashCardComponent = () => {
     }
   };
 
-  const handleStartRecall = () => {
-    if (customTime !== '') {
-      const timeInSeconds = parseInt(customTime);
-      if (!isNaN(timeInSeconds) && timeInSeconds > 0) {
-        setRecallTime(timeInSeconds);
-      }
+// Inside FlashCardComponent
+const handleStartRecall = () => {
+  if (customTime !== '') {
+    const timeInSeconds = parseInt(customTime);
+    if (!isNaN(timeInSeconds) && timeInSeconds > 0) {
+      setRecallTime(timeInSeconds);
     }
-    setShowUI(false);
-  };
+  }
+  setShowUI(false);
+  setEvaluationMode(true); // Set evaluationMode to true when starting recall
+};
+
+const handleConfirmationSubmit = (score) => {
+  setSessionScore(score);
+  setEvaluationMode(false); // Reset evaluationMode to false after evaluation
+};
 
   const handleCustomTimeChange = (e) => {
     setCustomTime(e.target.value);
   };
 
-  const handleConfirmationSubmit = (score) => {
-    setSessionScore(score);
-  };
 
- // Inside FlashCardComponent
-const createCard = () => {
-  if (currentTopicIndex !== null) {
-    const newCard = { terms: topics[currentTopicIndex].terms.slice() };
-    setFlashCards(prevCards => [...prevCards, newCard]);
-  }
-};
+
+  // Inside FlashCardComponent
+  const createCard = () => {
+    if (currentTopicIndex !== null) {
+      const newCard = { terms: topics[currentTopicIndex].terms.slice() };
+      setFlashCards(prevCards => [...prevCards, newCard]);
+    }
+  };
 
   const addTermToCard = (term) => {
     if (flashCards.length > 0) {
@@ -90,6 +96,9 @@ const createCard = () => {
       return () => clearTimeout(timer);
     }
   }, [showUI, recallTime]);
+
+  console.log("showUI state:", showUI);
+  console.log("rememberedCards:", rememberedCards);
 
   return (
     <div className="flash-card-container">
@@ -142,6 +151,7 @@ const createCard = () => {
               </button>
             </>
           )}
+
           {currentTopicIndex !== null && (
             <div>
               <input
@@ -163,8 +173,8 @@ const createCard = () => {
         </div>
       )}
 
-      {evaluationMode && (
-        <ConfirmationPage terms={flashCards.map(card => card.terms).flat()} onSubmit={handleConfirmationSubmit} />
+      {showUI && evaluationMode && (
+        <ConfirmationPage cards={flashCards} onSubmit={handleConfirmationSubmit} />
       )}
 
       {sessionScore !== null && (
