@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import FlashCard from './FlashCard';
-import ConfirmationPage from './ConfirmationPage';
 import './FlashCardComponent.css';
+import { useNavigate } from 'react-router-dom';
+
 
 const FlashCardComponent = () => {
   const [topics, setTopics] = useState([]);
@@ -10,11 +11,14 @@ const FlashCardComponent = () => {
   const [currentTopicIndex, setCurrentTopicIndex] = useState(null);
   const [newTopicTitle, setNewTopicTitle] = useState('');
   const [showUI, setShowUI] = useState(true);
-  const [recallTime, setRecallTime] = useState(5);
+  const [recallTime, setRecallTime] = useState();
   const [customTime, setCustomTime] = useState('');
-  const [evaluationMode, setEvaluationMode] = useState(false);
-  const [sessionScore, setSessionScore] = useState(null);
-  const [rememberedCards, setRememberedCards] = useState([]); // Added rememberedCards state
+  const navigate = useNavigate(); 
+
+   const handleManualNavigation = () => {
+    navigate('/confirmation');
+  };
+
 
   const createTopic = () => {
     if (newTopicTitle.trim() !== '') {
@@ -42,35 +46,31 @@ const FlashCardComponent = () => {
     }
   };
 
-// Inside FlashCardComponent
-const handleStartRecall = () => {
-  if (customTime !== '') {
-    const timeInSeconds = parseInt(customTime);
-    if (!isNaN(timeInSeconds) && timeInSeconds > 0) {
-      setRecallTime(timeInSeconds);
+  const handleStartRecall = () => {
+    if (customTime !== '') {
+      const timeInSeconds = parseInt(customTime);
+      if (!isNaN(timeInSeconds) && timeInSeconds > 0) {
+        setRecallTime(timeInSeconds);
+      }
     }
-  }
-  setShowUI(false);
-  setEvaluationMode(true); // Set evaluationMode to true when starting recall
-};
-
-const handleConfirmationSubmit = (score) => {
-  setSessionScore(score);
-  setEvaluationMode(false); // Reset evaluationMode to false after evaluation
-};
+    setShowUI(false);
+  };
 
   const handleCustomTimeChange = (e) => {
     setCustomTime(e.target.value);
   };
 
-
-
-  // Inside FlashCardComponent
   const createCard = () => {
-    if (currentTopicIndex !== null) {
+    if (currentTopicIndex !== null && topics[currentTopicIndex].terms.length > 0) {
       const newCard = { terms: topics[currentTopicIndex].terms.slice() };
       setFlashCards(prevCards => [...prevCards, newCard]);
     }
+  };
+
+  const removeCard = (cardIndex) => {
+    const updatedCards = [...flashCards];
+    updatedCards.splice(cardIndex, 1);
+    setFlashCards(updatedCards);
   };
 
   const addTermToCard = (term) => {
@@ -91,14 +91,11 @@ const handleConfirmationSubmit = (score) => {
     if (!showUI) {
       const timer = setTimeout(() => {
         setShowUI(true);
-        setEvaluationMode(true);
+	navigate('/confirmation');
       }, recallTime * 1000);
       return () => clearTimeout(timer);
     }
-  }, [showUI, recallTime]);
-
-  console.log("showUI state:", showUI);
-  console.log("rememberedCards:", rememberedCards);
+  }, [showUI, recallTime, navigate]);
 
   return (
     <div className="flash-card-container">
@@ -166,20 +163,14 @@ const handleConfirmationSubmit = (score) => {
               </button>
             </div>
           )}
+<button onClick={handleManualNavigation}>Go to Confirmation</button>
+
+
+
         </>
       ) : (
         <div>
           <p>Recall in progress...</p>
-        </div>
-      )}
-
-      {showUI && evaluationMode && (
-        <ConfirmationPage cards={flashCards} onSubmit={handleConfirmationSubmit} />
-      )}
-
-      {sessionScore !== null && (
-        <div>
-          <p>Your session score: {sessionScore}%</p>
         </div>
       )}
 
@@ -203,4 +194,3 @@ const handleConfirmationSubmit = (score) => {
 };
 
 export default FlashCardComponent;
-
