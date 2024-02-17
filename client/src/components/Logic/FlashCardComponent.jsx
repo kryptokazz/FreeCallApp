@@ -47,14 +47,17 @@ const FlashCardComponent = () => {
   };
 
   const handleStartRecall = () => {
-    if (customTime !== '') {
-      const timeInSeconds = parseInt(customTime);
-      if (!isNaN(timeInSeconds) && timeInSeconds > 0) {
-        setRecallTime(timeInSeconds);
-      }
+  if (customTime !== '') {
+    const timeInSeconds = parseInt(customTime);
+    if (!isNaN(timeInSeconds) && timeInSeconds > 0) {
+      setRecallTime(timeInSeconds);
+      setShowUI(false);
+      // Pass flashCards data to the ConfirmationPage
+      navigate('/confirmation', { state: { flashCards } });
     }
-    setShowUI(false);
-  };
+  }
+};
+
 
   const handleCustomTimeChange = (e) => {
     setCustomTime(e.target.value);
@@ -87,15 +90,17 @@ const FlashCardComponent = () => {
     setFlashCards(updatedCards);
   };
 
-  useEffect(() => {
-    if (!showUI) {
-      const timer = setTimeout(() => {
-        setShowUI(true);
-	navigate('/confirmation');
-      }, recallTime * 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [showUI, recallTime, navigate]);
+ useEffect(() => {
+  if (!showUI && recallTime) {
+    const timer = setTimeout(() => {
+      setShowUI(true);
+      navigate('/confirmation');
+    }, recallTime * 1000);
+
+    // Clear the timer when the component unmounts or when recallTime changes
+    return () => clearTimeout(timer);
+  }
+}, [showUI, recallTime, navigate]);
 
   return (
     <div className="flash-card-container">
@@ -163,9 +168,6 @@ const FlashCardComponent = () => {
               </button>
             </div>
           )}
-<button onClick={handleManualNavigation}>Go to Confirmation</button>
-
-
 
         </>
       ) : (
