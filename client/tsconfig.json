@@ -1,34 +1,37 @@
+
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
+    "baseUrl": "./src",
     "paths": {
-      "@components/*": ["./src/components/*"],
-      "@user/*": ["./src/User/*"],
-      "@topic/*": ["./src/Topic/*"],
-      "@set/*": ["./src/Set/*"],
-      "@field/*": ["./src/Field/*"],
-      "@word/*": ["./src/Word/*"]
+      "@components/*": ["components/*"],
+      "@user/*": ["components/User/*"],
+      "@topic/*": ["components/Topic/*"],
+      "@set/*": ["components/Set/*"],
+      "@field/*": ["components/Field/*"],
+      "@word/*": ["components/Word/*"],
+      "@data/*": ["components/Data/*"],
+      "@logic/*": ["components/Logic/*"],
+      "@routes/*": ["routes/*"],  
+      "@home": ["Home/Home"],
+      "@endpoint": ["Endpoint/Endpoint"]
     },
     "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "node", // Change to "node" for better compatibility
+    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-
-    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src"]
 }
 

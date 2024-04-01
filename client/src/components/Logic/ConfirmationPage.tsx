@@ -1,13 +1,19 @@
+
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const ConfirmationPage = () => {
-  const location = useLocation();
-  const { flashCards } = location.state;
-  const [rememberedCards, setRememberedCards] = useState([]);
+interface FlashCard {
+  question: string;
+  answer: string;
+}
 
-  // Handle checkbox change
-  const handleCardClick = (cardIndex) => {
+const ConfirmationPage: React.FC = () => {
+  const location = useLocation();
+  const { flashCards } = location.state as { flashCards: FlashCard[] };
+
+  const [rememberedCards, setRememberedCards] = useState<number[]>([]);
+
+  const handleCardClick = (cardIndex: number) => {
     if (!rememberedCards.includes(cardIndex)) {
       setRememberedCards([...rememberedCards, cardIndex]);
     } else {
@@ -15,11 +21,8 @@ const ConfirmationPage = () => {
     }
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here, you can define the onSubmit function or call the appropriate function to handle form submission
-    // For example:
     console.log('Remembered Cards:', rememberedCards);
     // Reset rememberedCards state or take further actions as needed
   };

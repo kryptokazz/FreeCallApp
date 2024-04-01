@@ -1,10 +1,11 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Endpoint.css'; // Make sure this path is correct
 
-const Home = () => {
+const Endpoint: React.FC = () => {
   return (
-    <div className="home-container">
+    <div className="endpoint-container">
       <h1>Welcome to FreeCallApp</h1>
       <nav className="navigation-menu">
         <ul>
@@ -20,13 +21,11 @@ const Home = () => {
           <li><Link to="/word-creation">Word Creation</Link></li>
           <li><Link to="/word-data">Word Data</Link></li>
           <li><Link to="/data"> Data </Link></li>
-
-	  
         </ul>
       </nav>
     </div>
   );
 };
 
-export default Home;
+export default Endpoint;
 

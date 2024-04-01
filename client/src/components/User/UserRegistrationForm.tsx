@@ -1,33 +1,33 @@
-import React, { useRef, useState, useEffect } from "react";
-import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import React, { useRef, useState, useEffect, ChangeEvent, FormEvent } from "react";
 import './UserRegistrationForm.css';
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
-const UserRegistrationForm = () => {
-  const userRef = useRef();
-  const pwdRef = useRef();
-  const confirmPwdRef = useRef();
-  const errRef = useRef();
+interface UserRegistrationFormProps {}
 
-  const [user, setUser] = useState('');
-  const [validName, setValidName] = useState(false);
-  const [userFocus, setUserFocus] = useState(false);
+const UserRegistrationForm: React.FC<UserRegistrationFormProps> = () => {
+  const userRef = useRef<HTMLInputElement>(null);
+  const pwdRef = useRef<HTMLInputElement>(null);
+  const confirmPwdRef = useRef<HTMLInputElement>(null);
 
-  const [pwd, setPwd] = useState('');
-  const [validPwd, setValidPwd] = useState(false);
-  const [pwdFocus, setPwdFocus] = useState(false);
+  const [user, setUser] = useState<string>('');
+  const [validName, setValidName] = useState<boolean>(false);
+  const [userFocus, setUserFocus] = useState<boolean>(false);
 
-  const [matchPwd, setMatchPwd] = useState('');
-  const [validMatch, setValidMatch] = useState(false);
-  const [matchFocus, setMatchFocus] = useState(false);
+  const [pwd, setPwd] = useState<string>('');
+  const [validPwd, setValidPwd] = useState<boolean>(false);
+  const [pwdFocus, setPwdFocus] = useState<boolean>(false);
 
-  const [errMsg, setErrMsg] = useState('');
-  const [success, setSuccess] = useState(false);
+  const [matchPwd, setMatchPwd] = useState<string>('');
+  const [validMatch, setValidMatch] = useState<boolean>(false);
+  const [matchFocus, setMatchFocus] = useState<boolean>(false);
+
+  const [errMsg, setErrMsg] = useState<string>('');
+  const [success, setSuccess] = useState<boolean>(false);
 
   useEffect(() => {
-    userRef.current.focus();
+    if (userRef.current) userRef.current.focus();
   }, []);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const UserRegistrationForm = () => {
     setErrMsg('');
   }, [user, pwd, matchPwd]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (validName && validPwd && validMatch) {
@@ -73,7 +73,7 @@ const UserRegistrationForm = () => {
                 id="username"
                 name="username"
                 value={user}
-                onChange={(e) => setUser(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setUser(e.target.value)}
                 onFocus={() => setUserFocus(true)}
                 onBlur={() => setUserFocus(false)}
                 ref={userRef}
@@ -88,7 +88,7 @@ const UserRegistrationForm = () => {
                 id="password"
                 name="password"
                 value={pwd}
-                onChange={(e) => setPwd(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setPwd(e.target.value)}
                 onFocus={() => setPwdFocus(true)}
                 onBlur={() => setPwdFocus(false)}
                 ref={pwdRef}
@@ -103,7 +103,7 @@ const UserRegistrationForm = () => {
                 id="confirm-password"
                 name="confirm-password"
                 value={matchPwd}
-                onChange={(e) => setMatchPwd(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setMatchPwd(e.target.value)}
                 onFocus={() => setMatchFocus(true)}
                 onBlur={() => setMatchFocus(false)}
                 ref={confirmPwdRef}
@@ -126,5 +126,3 @@ const UserRegistrationForm = () => {
 };
 
 export default UserRegistrationForm;
-
-

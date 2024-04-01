@@ -1,4 +1,4 @@
-// vite.config.js
+
 import { defineConfig } from 'vite';
 import path from 'path';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -13,10 +13,10 @@ export default defineConfig({
       '@word': path.resolve(__dirname, 'src/components/Word'),
       '@set': path.resolve(__dirname, 'src/components/Set'),
       '@topic': path.resolve(__dirname, 'src/components/Topic'),
-      '@data' : path.resolve(__dirname, 'src/components/Data'), 
-      '@logic' : path.resolve(__dirname, 'src/components/Logic'), 
-      '@routes' : path.resolve(__dirname, 'src/routes'),
-      '@home' : path.resolve(__dirname, 'src/Home/Home'),
+      '@data': path.resolve(__dirname, 'src/components/Data'),
+      '@logic': path.resolve(__dirname, 'src/components/Logic'),
+      '@routes': path.resolve(__dirname, 'src/routes'),
+      '@home': path.resolve(__dirname, 'src/Home/Home'),
       '@endpoint': path.resolve(__dirname, 'src/Endpoint/Endpoint'),
     },
   },

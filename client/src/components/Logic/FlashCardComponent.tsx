@@ -1,24 +1,27 @@
+
 import React, { useState, useEffect } from 'react';
 import FlashCard from './FlashCard';
 import './FlashCardComponent.css';
 import { useNavigate } from 'react-router-dom';
 
+interface FlashCard {
+  terms: string[];
+}
 
-const FlashCardComponent = () => {
-  const [topics, setTopics] = useState([]);
-  const [inputTerm, setInputTerm] = useState('');
-  const [flashCards, setFlashCards] = useState([]);
-  const [currentTopicIndex, setCurrentTopicIndex] = useState(null);
-  const [newTopicTitle, setNewTopicTitle] = useState('');
-  const [showUI, setShowUI] = useState(true);
-  const [recallTime, setRecallTime] = useState();
-  const [customTime, setCustomTime] = useState('');
-  const navigate = useNavigate(); 
+const FlashCardComponent: React.FC = () => {
+  const [topics, setTopics] = useState<{ title: string; terms: string[] }[]>([]);
+  const [inputTerm, setInputTerm] = useState<string>('');
+  const [flashCards, setFlashCards] = useState<FlashCard[]>([]);
+  const [currentTopicIndex, setCurrentTopicIndex] = useState<number | null>(null);
+  const [newTopicTitle, setNewTopicTitle] = useState<string>('');
+  const [showUI, setShowUI] = useState<boolean>(true);
+  const [recallTime, setRecallTime] = useState<number>();
+  const [customTime, setCustomTime] = useState<string>('');
+  const navigate = useNavigate();
 
-   const handleManualNavigation = () => {
+  const handleManualNavigation = () => {
     navigate('/confirmation');
   };
-
 
   const createTopic = () => {
     if (newTopicTitle.trim() !== '') {
@@ -38,7 +41,7 @@ const FlashCardComponent = () => {
     }
   };
 
-  const removeTerm = (termIndex) => {
+  const removeTerm = (termIndex: number) => {
     if (currentTopicIndex !== null && topics[currentTopicIndex].terms.length > 1) {
       const updatedTopics = [...topics];
       updatedTopics[currentTopicIndex].terms.splice(termIndex, 1);
@@ -47,19 +50,17 @@ const FlashCardComponent = () => {
   };
 
   const handleStartRecall = () => {
-  if (customTime !== '') {
-    const timeInSeconds = parseInt(customTime);
-    if (!isNaN(timeInSeconds) && timeInSeconds > 0) {
-      setRecallTime(timeInSeconds);
-      setShowUI(false);
-      // Pass flashCards data to the ConfirmationPage
-      navigate('/confirmation', { state: { flashCards } });
+    if (customTime !== '') {
+      const timeInSeconds = parseInt(customTime);
+      if (!isNaN(timeInSeconds) && timeInSeconds > 0) {
+        setRecallTime(timeInSeconds);
+        setShowUI(false);
+        navigate('/confirmation', { state: { flashCards } });
+      }
     }
-  }
-};
+  };
 
-
-  const handleCustomTimeChange = (e) => {
+  const handleCustomTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCustomTime(e.target.value);
   };
 
@@ -70,13 +71,13 @@ const FlashCardComponent = () => {
     }
   };
 
-  const removeCard = (cardIndex) => {
+  const removeCard = (cardIndex: number) => {
     const updatedCards = [...flashCards];
     updatedCards.splice(cardIndex, 1);
     setFlashCards(updatedCards);
   };
 
-  const addTermToCard = (term) => {
+  const addTermToCard = (term: string) => {
     if (flashCards.length > 0) {
       const updatedCards = [...flashCards];
       updatedCards[flashCards.length - 1].terms.push(term);
@@ -84,23 +85,23 @@ const FlashCardComponent = () => {
     }
   };
 
-  const removeTermFromCard = (cardIndex, termIndex) => {
+  const removeTermFromCard = (cardIndex: number, termIndex: number) => {
     const updatedCards = [...flashCards];
     updatedCards[cardIndex].terms.splice(termIndex, 1);
     setFlashCards(updatedCards);
   };
 
- useEffect(() => {
-  if (!showUI && recallTime) {
-    const timer = setTimeout(() => {
-      setShowUI(true);
-      navigate('/confirmation');
-    }, recallTime * 1000);
+  useEffect(() => {
+    if (!showUI && recallTime) {
+      const timer = setTimeout(() => {
+        setShowUI(true);
+        navigate('/confirmation');
+      }, recallTime * 1000);
 
-    // Clear the timer when the component unmounts or when recallTime changes
-    return () => clearTimeout(timer);
-  }
-}, [showUI, recallTime, navigate]);
+      // Clear the timer when the component unmounts or when recallTime changes
+      return () => clearTimeout(timer);
+    }
+  }, [showUI, recallTime, navigate]);
 
   return (
     <div className="flash-card-container">

@@ -1,13 +1,19 @@
+
 import React from 'react';
 
-const FlashCard = ({ card, onDelete }) => {
-  // Assuming card is an object with a 'terms' property
+interface FlashCardProps {
+  card: {
+    terms: string[];
+  };
+  onDelete: () => void;
+}
+
+const FlashCard: React.FC<FlashCardProps> = ({ card, onDelete }) => {
   const { terms } = card;
 
   return (
     <div>
       <div style={{ whiteSpace: 'pre-line' }}>
-        {/* Render each term in 'terms' array */}
         {terms.map((term, index) => (
           <p key={index}>{term}</p>
         ))}

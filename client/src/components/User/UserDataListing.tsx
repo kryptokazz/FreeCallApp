@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
+
+
+interface User {
+        user_id: number;
+        username: string;
+}
+
+
+
 
 
 const UserDataListing: React.FC = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
 
 
    const getUser = async () => {
        try {
-           const response = await axios.get("http://localhost:5000/users");
+           const response: AxiosResponse<User[]> = await axios.get("http://localhost:5000/users");
            setUsers(response.data);
-       } catch (err) {
+       } catch (err: any) {
            console.error(err.message);
        }
    };

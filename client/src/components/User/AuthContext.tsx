@@ -1,12 +1,25 @@
-import React, { createContext, useContext, useState } from 'react';
+
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 import axios from 'axios';
 
-const AuthContext = createContext();
+interface UserData {
+  username: string;
+  password: string;
+  // Add more properties as needed
+}
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+interface AuthContextType {
+  user: UserData | null;
+  login: (userData: UserData) => Promise<void>;
+  logout: () => void;
+}
 
-  const login = async (userData) => {
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<UserData | null>(null);
+
+  const login = async (userData: UserData) => {
     try {
       const response = await axios.post('http://localhost:5000/login', {
         username: userData.username,
@@ -27,7 +40,7 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       // Handle network errors or other issues
-      console.error('Error during login:', error.message);
+      console.error('Error during login:', (error as Error).message);
     }
   };
 
@@ -46,7 +59,11 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
+export const useAuth = (): AuthContextType => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };
 
