@@ -1,11 +1,13 @@
 
 import React from 'react';
 
-interface FlashCardProps {
+export interface FlashCardProps {
   card: {
     terms: string[];
   };
   onDelete: () => void;
+  onAddTerm: (term: string) => void; // Added missing prop
+  onRemoveTerm: (termIndex: number) => void; // Added missing prop
 }
 
 const FlashCard: React.FC<FlashCardProps> = ({ card, onDelete }) => {

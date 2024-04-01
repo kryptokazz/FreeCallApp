@@ -1,27 +1,24 @@
 
 import React, { useState, useEffect } from 'react';
-import FlashCard from './FlashCard';
+import FlashCard from './FlashCard'; // Assuming FlashCardProps interface is defined in FlashCard file
 import './FlashCardComponent.css';
 import { useNavigate } from 'react-router-dom';
 
-interface FlashCard {
+interface Topic {
+  title: string;
   terms: string[];
 }
 
 const FlashCardComponent: React.FC = () => {
-  const [topics, setTopics] = useState<{ title: string; terms: string[] }[]>([]);
+  const [topics, setTopics] = useState<Topic[]>([]);
   const [inputTerm, setInputTerm] = useState<string>('');
-  const [flashCards, setFlashCards] = useState<FlashCard[]>([]);
+  const [flashCards, setFlashCards] = useState<{ terms: string[] }[]>([]); // Changed FlashCardProps to { terms: string[] }
   const [currentTopicIndex, setCurrentTopicIndex] = useState<number | null>(null);
   const [newTopicTitle, setNewTopicTitle] = useState<string>('');
   const [showUI, setShowUI] = useState<boolean>(true);
   const [recallTime, setRecallTime] = useState<number>();
   const [customTime, setCustomTime] = useState<string>('');
   const navigate = useNavigate();
-
-  const handleManualNavigation = () => {
-    navigate('/confirmation');
-  };
 
   const createTopic = () => {
     if (newTopicTitle.trim() !== '') {
@@ -186,7 +183,7 @@ const FlashCardComponent: React.FC = () => {
                 card={card}
                 onDelete={() => removeCard(index)}
                 onAddTerm={addTermToCard}
-                onRemoveTerm={(termIndex) => removeTermFromCard(index, termIndex)}
+                onRemoveTerm={(termIndex: number) => removeTermFromCard(index, termIndex)}
               />
               <hr className="hr" />
             </div>
@@ -197,3 +194,4 @@ const FlashCardComponent: React.FC = () => {
 };
 
 export default FlashCardComponent;
+
