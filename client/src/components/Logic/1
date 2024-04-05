@@ -16,8 +16,6 @@ const FlashCardComponent: React.FC = () => {
   const [recallInProgress, setRecallInProgress] = useState<boolean>(false);
   const [recallTime, setRecallTime] = useState<number | null>(null);
   const [showAnswers, setShowAnswers] = useState<boolean>(false);
-  const [selections, setSelections] = useState<boolean[]>([]);
-  const [score, setScore] = useState<number | null>(null);
 
   const createTopic = () => {
     if (newTopicTitle.trim() !== '') {
@@ -52,11 +50,8 @@ const FlashCardComponent: React.FC = () => {
   };
 
   const handleStartRecall = () => {
-    if (recallTime && topics.length > 0) {
+    if (recallTime) {
       setRecallInProgress(true);
-      setShowAnswers(false);
-      setSelections(Array(topics[currentTopicIndex!].terms.length).fill(false));
-
       setTimeout(() => {
         setRecallInProgress(false);
         setShowAnswers(true);
@@ -66,7 +61,7 @@ const FlashCardComponent: React.FC = () => {
 
   const createCard = () => {
     if (currentTopicIndex !== null && topics[currentTopicIndex].terms.length > 0) {
-      setFlashCards([{ terms: topics[currentTopicIndex].terms.map((term) => term.text) }]);
+      setFlashCards([{ terms: topics[currentTopicIndex].terms.map(term => term.text) }]);
     }
   };
 
@@ -85,20 +80,16 @@ const FlashCardComponent: React.FC = () => {
     );
   };
 
-  const handleSelectionChange = (index: number) => {
-    const newSelections = [...selections];
-    newSelections[index] = !newSelections[index];
-    setSelections(newSelections);
-  };
-
-  const handleSubmit = () => {
-    let calculatedScore = 0;
-    selections.forEach((selected, index) => {
-      if (selected && topics[currentTopicIndex!].terms[index].selected) {
-        calculatedScore++;
-      }
+  const getScore = () => {
+    let score = 0;
+    topics.forEach((topic) => {
+      topic.terms.forEach((term) => {
+        if (term.selected) {
+          score++;
+        }
+      });
     });
-    setScore(calculatedScore);
+    return score;
   };
 
   return (
@@ -176,6 +167,13 @@ const FlashCardComponent: React.FC = () => {
               <button
                 onClick={() => {
                   handleStartRecall();
+                  setShowAnswers(false);
+                  setTopics((prevTopics) =>
+                    prevTopics.map((topic) => ({
+                      ...topic,
+                      terms: topic.terms.map((term) => ({ ...term, selected: false }))
+                    }))
+                  );
                 }}
                 className="start-recall-button"
               >
@@ -198,29 +196,10 @@ const FlashCardComponent: React.FC = () => {
           {flashCards.map((card, index) => (
             <div key={index} className="card-item">
               <FlashCard card={card} handleSelectTerm={handleSelectTerm} topicIndex={currentTopicIndex!} />
-              <div className="selection-boxes">
-                {topics[currentTopicIndex!].terms.map((term, termIndex) => (
-                  <label key={termIndex}>
-                    <input
-                      type="checkbox"
-                      checked={selections[termIndex]}
-                      onChange={() => handleSelectionChange(termIndex)}
-                    />
-                    Term {termIndex + 1}
-                  </label>
-                ))}
-              </div>
               <hr className="hr" />
             </div>
           ))}
-          <div className="score-container">
-            {score !== null && (
-              <p>Your score: {score}/{flashCards.length}</p>
-            )}
-            <button onClick={handleSubmit} className="submit-button">
-              Submit Selections
-            </button>
-          </div>
+          <p>Your score: {getScore()}/{flashCards.length}</p>
         </div>
       )}
     </div>
