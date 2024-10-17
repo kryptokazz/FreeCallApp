@@ -6,6 +6,9 @@ import Home from '@home';
 import Endpoint from '@endpoint';
 import FlashCardComponent from '@logic/FlashCardComponent';
 import UserRegistrationForm from '@user/UserRegistrationForm';
+import FlashCardEditor from '@logic/FlashCardEditor';
+import FlashCardViewer from '@logic/FlashCardViewer';
+import SelfAssessment from '@logic/SelfAssessment';
 import UserLoginForm from '@user/UserLoginForm';
 import SetCreationForm from '@set/SetCreationForm';
 import FieldCreationForm from '@field/FieldCreationForm';
@@ -23,6 +26,9 @@ const AppRouter: React.FC = () => {
           <Route path="/logic" element={<FlashCardComponent />} />
           <Route path="/user-login" element={<UserLoginForm />} />
           <Route path="/dashboard" element={<Dashboard />} />
+           <Route path="/flashcard-editor" element={<FlashCardEditor />} />
+            <Route path="/flashcard-viewer" element={<FlashCardViewer />} />
+            <Route path="/self-assessment" element={<SelfAssessment />} /> 
           <Route
             path="/set-creation"
             element={<SetCreationForm topicId="123" />} // Assuming topicId is passed correctly
@@ -36,4 +42,5 @@ const AppRouter: React.FC = () => {
 };
 
 export default AppRouter;
+
 
