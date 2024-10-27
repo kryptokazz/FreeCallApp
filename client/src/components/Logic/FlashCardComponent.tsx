@@ -1,227 +1,182 @@
-import React, { useState } from 'react';
-import FlashCard from './FlashCard';
-import './FlashCardComponent.css';
+// /client/src/components/Logic/FlashCardComponent.tsx
+import React, { useState, useEffect } from 'react';
+import FlashCardEditor from './FlashCardEditor';
+import FlashCardViewer from './FlashCardViewer';
+import SelfAssessment from './SelfAssessment';
+import ConceptEditor from './ConceptEditor'; // Import ConceptEditor
 
-interface Topic {
-  title: string;
-  terms: { text: string; selected: boolean }[];
+interface FlashCardField {
+  id: string;
+  fieldName: string;
+  value: string;
+}
+
+interface FlashCard {
+  id: string;
+  fields: FlashCardField[];
+}
+
+interface Concept {
+  id: string;
+  name: string;
+  flashCards: FlashCard[];
+  lastStudied: Date | null;
+  nextReview: Date | null;
+  easeFactor: number;
 }
 
 const FlashCardComponent: React.FC = () => {
-  const [topics, setTopics] = useState<Topic[]>([]);
-  const [inputTerm, setInputTerm] = useState<string>('');
-  const [flashCards, setFlashCards] = useState<{ terms: string[] }[]>([]);
-  const [currentTopicIndex, setCurrentTopicIndex] = useState<number | null>(null);
-  const [newTopicTitle, setNewTopicTitle] = useState<string>('');
-  const [recallInProgress, setRecallInProgress] = useState<boolean>(false);
-  const [recallTime, setRecallTime] = useState<number | null>(null);
-  const [showAnswers, setShowAnswers] = useState<boolean>(false);
-  const [selections, setSelections] = useState<boolean[]>([]);
-  const [score, setScore] = useState<number | null>(null);
+  const [concepts, setConcepts] = useState<Concept[]>(() => {
+    const storedConcepts = localStorage.getItem('concepts');
+    return storedConcepts ? JSON.parse(storedConcepts) : [];
+  });
+  const [currentConcept, setCurrentConcept] = useState<Concept | null>(null);
+  const [currentView, setCurrentView] = useState<'conceptList' | 'flashCardList' | 'createConcept' | 'createFlashCard' | 'test' | 'assess'>('conceptList');
+  const [currentFlashCardIndex, setCurrentFlashCardIndex] = useState<number>(0);
+  const [cardsToDisplay, setCardsToDisplay] = useState<number>(1);
 
-  const createTopic = () => {
-    if (newTopicTitle.trim() !== '') {
-      const newTopic = { title: newTopicTitle, terms: [{ text: '', selected: false }] };
-      setTopics([...topics, newTopic]);
-      setCurrentTopicIndex(topics.length);
-      setNewTopicTitle('');
+  useEffect(() => {
+    localStorage.setItem('concepts', JSON.stringify(concepts));
+  }, [concepts]);
+
+  const addConcept = (concept: Concept) => {
+    setConcepts([...concepts, concept]);
+    setCurrentView('conceptList');
+  };
+
+  const selectConcept = (conceptId: string) => {
+    const concept = concepts.find(c => c.id === conceptId) || null;
+    setCurrentConcept(concept);
+    setCurrentView('flashCardList');
+  };
+
+  const addFlashCardToConcept = (flashCard: FlashCard) => {
+    if (currentConcept) {
+      const updatedConcept = {
+        ...currentConcept,
+        flashCards: [...currentConcept.flashCards, flashCard],
+      };
+      setConcepts(concepts.map(c => c.id === currentConcept.id ? updatedConcept : c));
+      setCurrentConcept(updatedConcept);
+      setCurrentView('flashCardList');
     }
   };
 
-  const addTerm = () => {
-    if (currentTopicIndex !== null) {
-      setTopics((prevTopics) =>
-        prevTopics.map((topic, index) =>
-          index === currentTopicIndex
-            ? { ...topic, terms: [...topic.terms, { text: inputTerm, selected: false }] }
-            : topic
-        )
-      );
-      setInputTerm('');
+  const startTest = () => {
+    if (currentConcept && currentConcept.flashCards.length > 0) {
+      setCurrentFlashCardIndex(0);
+      setCurrentView('test');
     }
   };
 
-  const removeTerm = (topicIndex: number, termIndex: number) => {
-    setTopics((prevTopics) =>
-      prevTopics.map((topic, index) =>
-        index === topicIndex
-          ? { ...topic, terms: topic.terms.filter((_, i) => i !== termIndex) }
-          : topic
-      )
-    );
-  };
+  const updateConceptReview = (conceptId: string, scores: { [key: string]: boolean }) => {
+    setConcepts(concepts.map(concept => {
+      if (concept.id === conceptId) {
+        const now = new Date();
+        const correctAnswers = Object.values(scores).filter(v => v).length;
+        const successRate = correctAnswers / Object.values(scores).length;
+        let easeFactor = concept.easeFactor || 2.5;
+        if (successRate >= 0.6) {
+          easeFactor += 0.1;
+        } else {
+          easeFactor -= 0.2;
+        }
+        easeFactor = Math.max(1.3, easeFactor);
 
-  const handleStartRecall = () => {
-    if (recallTime && topics.length > 0) {
-      setRecallInProgress(true);
-      setShowAnswers(false);
-      setSelections(Array(topics[currentTopicIndex!].terms.length).fill(false));
+        const interval = calculateInterval(easeFactor);
+        const nextReviewDate = new Date(now.getTime() + interval * 24 * 60 * 60 * 1000);
 
-      setTimeout(() => {
-        setRecallInProgress(false);
-        setShowAnswers(true);
-      }, recallTime * 1000);
-    }
-  };
-
-  const createCard = () => {
-    if (currentTopicIndex !== null && topics[currentTopicIndex].terms.length > 0) {
-      setFlashCards([{ terms: topics[currentTopicIndex].terms.map((term) => term.text) }]);
-    }
-  };
-
-  const handleSelectTerm = (topicIndex: number, termIndex: number) => {
-    setTopics((prevTopics) =>
-      prevTopics.map((topic, index) =>
-        index === topicIndex
-          ? {
-              ...topic,
-              terms: topic.terms.map((term, i) =>
-                i === termIndex ? { ...term, selected: !term.selected } : term
-              )
-            }
-          : topic
-      )
-    );
-  };
-
-  const handleSelectionChange = (index: number) => {
-    const newSelections = [...selections];
-    newSelections[index] = !newSelections[index];
-    setSelections(newSelections);
-  };
-
-  const handleSubmit = () => {
-    let calculatedScore = 0;
-    selections.forEach((selected, index) => {
-      if (selected && topics[currentTopicIndex!].terms[index].selected) {
-        calculatedScore++;
+        return {
+          ...concept,
+          lastStudied: now,
+          nextReview: nextReviewDate,
+          easeFactor: easeFactor,
+        };
       }
-    });
-    setScore(calculatedScore);
+      return concept;
+    }));
+  };
+
+  const calculateInterval = (easeFactor: number) => {
+    return Math.round(easeFactor);
   };
 
   return (
-    <div className="flash-card-container">
-      <h1 className="heading">Flash Card App</h1>
-
-      {!recallInProgress && !showAnswers && (
-        <>
-          {currentTopicIndex === null && (
-            <div className="topic-input-container">
-              <input
-                type="text"
-                placeholder="Enter Topic Title"
-                value={newTopicTitle}
-                onChange={(e) => setNewTopicTitle(e.target.value)}
-                className="input"
-              />
-              <button onClick={createTopic} className="button">
-                Create Topic
-              </button>
-            </div>
-          )}
-
-          {currentTopicIndex !== null && (
-            <>
-              <div className="terms-container">
-                {topics[currentTopicIndex].terms.map((term, termIndex) => (
-                  <div key={termIndex} className="term-item">
-                    <input
-                      type="text"
-                      placeholder={`Term ${termIndex + 1}`}
-                      value={term.text}
-                      onChange={(e) => {
-                        setTopics((prevTopics) =>
-                          prevTopics.map((topic, index) =>
-                            index === currentTopicIndex
-                              ? {
-                                  ...topic,
-                                  terms: topic.terms.map((t, i) =>
-                                    i === termIndex ? { ...t, text: e.target.value } : t
-                                  )
-                                }
-                              : topic
-                          )
-                        );
-                      }}
-                      className="input"
-                    />
-                    <button onClick={() => removeTerm(currentTopicIndex!, termIndex)} className="remove-button">
-                      Remove Term
-                    </button>
-                  </div>
-                ))}
-              </div>
-              <div className="button-container">
-                <button onClick={addTerm} className="button">
-                  Add Term
-                </button>
-                <button onClick={createCard} className="button">
-                  Create Card
-                </button>
-              </div>
-            </>
-          )}
-
-          {currentTopicIndex !== null && (
-            <div className="recall-time-container">
-              <input
-                type="number"
-                placeholder="Custom Recall Time (seconds)"
-                value={recallTime || ''}
-                onChange={(e) => setRecallTime(parseInt(e.target.value))}
-                className="input"
-              />
-              <button
-                onClick={() => {
-                  handleStartRecall();
-                }}
-                className="start-recall-button"
-              >
-                Start Recall
-              </button>
-            </div>
-          )}
-        </>
-      )}
-
-      {recallInProgress && (
-        <div>
-          <p>Recall in progress...</p>
+    <div>
+      {currentView === 'conceptList' && (
+        <div className="flash-card-container">
+          <h1 className="heading">My Concepts</h1>
+          <button className="button" onClick={() => setCurrentView('createConcept')}>Create Concept</button>
+          <ul>
+            {concepts.map(concept => {
+              const isDueForReview = concept.nextReview && new Date(concept.nextReview) <= new Date();
+              return (
+                <li key={concept.id}>
+                  <button className="button" onClick={() => selectConcept(concept.id)}>
+                    {concept.name} {isDueForReview && <span style={{ color: 'red' }}>(Review Due)</span>}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       )}
 
-      {showAnswers && (
-        <div className="cards-container">
-          <h2 className="cards-heading">Flash Cards - Answers</h2>
-          {flashCards.map((card, index) => (
-            <div key={index} className="card-item">
-              <FlashCard card={card} handleSelectTerm={handleSelectTerm} topicIndex={currentTopicIndex!} />
-              <div className="selection-boxes">
-                {topics[currentTopicIndex!].terms.map((term, termIndex) => (
-                  <label key={termIndex}>
-                    <input
-                      type="checkbox"
-                      checked={selections[termIndex]}
-                      onChange={() => handleSelectionChange(termIndex)}
-                    />
-                    Term {termIndex + 1}
-                  </label>
-                ))}
-              </div>
-              <hr className="hr" />
-            </div>
-          ))}
-          <div className="score-container">
-            {score !== null && (
-              <p>Your score: {score}/{flashCards.length}</p>
-            )}
-            <button onClick={handleSubmit} className="submit-button">
-              Submit Selections
-            </button>
-          </div>
+      {currentView === 'createConcept' && (
+        <ConceptEditor
+          onSave={addConcept}
+          onCancel={() => setCurrentView('conceptList')}
+        />
+      )}
+
+      {currentView === 'flashCardList' && currentConcept && (
+        <div className="flash-card-container">
+          <h1 className="heading">Concept: {currentConcept.name}</h1>
+          <button className="button" onClick={() => setCurrentView('createFlashCard')}>Add FlashCard</button>
+          <button className="button" onClick={startTest}>Start Test</button>
+          <label>
+            Number of cards to display at once:
+            <input
+              type="number"
+              value={cardsToDisplay}
+              min={1}
+              max={currentConcept.flashCards.length}
+              onChange={(e) => setCardsToDisplay(Number(e.target.value))}
+              className="input"
+            />
+          </label>
+          <ul>
+            {currentConcept.flashCards.map((card, index) => (
+              <li key={card.id}>FlashCard {index + 1}</li>
+            ))}
+          </ul>
+          <button className="button" onClick={() => setCurrentView('conceptList')}>Back to Concepts</button>
         </div>
+      )}
+
+      {currentView === 'createFlashCard' && currentConcept && (
+        <FlashCardEditor
+          onSave={addFlashCardToConcept}
+          onCancel={() => setCurrentView('flashCardList')}
+        />
+      )}
+
+      {currentView === 'test' && currentConcept && (
+        <FlashCardViewer
+          flashCards={currentConcept.flashCards}
+          onComplete={() => setCurrentView('assess')}
+          cardsToDisplay={cardsToDisplay}
+        />
+      )}
+
+      {currentView === 'assess' && currentConcept && (
+        <SelfAssessment
+          flashCards={currentConcept.flashCards}
+          onFinish={(scores) => {
+            updateConceptReview(currentConcept.id, scores);
+            setCurrentView('flashCardList');
+          }}
+        />
       )}
     </div>
   );
